@@ -6,18 +6,17 @@
     <title>AI 코칭 역량 평가 발표자료</title>
     <style>
         /*
-         * === CSS 재설계 (v11) ===
-         * v10의 안정적인 레이아웃(vw 기반 폰트, flex-start, overflow-y: auto)을 기반으로 함.
-         * PDF 인쇄 기능을 위한 '@media print' 스타일을 오류 없이 재추가.
+         * === CSS 재설계 (v12) ===
+         * - v11(안정적인 레이아웃) 기반
+         * - @media print 스타일 수정:
+         * 1. 텍스트만 남던 문제 해결 -> 'print-color-adjust: exact;'를 모든 디자인 요소에 적용.
+         * 2. 오렌지 Bar, h3 레이어, 표 배경색, 하이라이트 등 스크린 디자인을 인쇄 시에도 유지.
+         * - '배경 그래픽' 옵션 안내를 위한 도움말 UI 추가.
          */
 
         /* 기본 스타일 (Screen Media) */
         @media screen {
             html {
-                /*
-                 * 폰트 크기를 뷰포트 '너비(vw)'에 반응하도록 설정
-                 * 최소 14px, 화면 너비의 1.2%를 기본, 최대 20px
-                 */
                 font-size: clamp(14px, 1.2vw, 20px);
             }
             
@@ -27,7 +26,6 @@
                 color: #333;
                 margin: 0;
                 padding: 0;
-                /* body의 스크롤은 완벽히 숨김 */
                 overflow: hidden; 
                 word-break: keep-all;
                 white-space: normal;
@@ -48,7 +46,6 @@
                 height: 100vh;
                 display: none; /* 기본적으로 숨김 */
                 flex-direction: column;
-                /* 수직 상단 정렬 */
                 justify-content: flex-start; 
                 align-items: center;
                 background-color: #fff;
@@ -56,13 +53,10 @@
                 top: 0;
                 left: 0;
                 box-sizing: border-box;
-                /* 화면 높이에 반응하는 상/하 여백 + 좌우 여백 */
                 padding: 5vh 8vw; 
-                /* 13인치 등 좁은 화면에서 콘텐츠 넘칠 시 '내부' 스크롤 */
                 overflow-y: auto;
             }
 
-            /* 첫 번째 슬라이드는 보이도록 설정 */
             section:first-of-type {
                 display: flex;
             }
@@ -77,10 +71,9 @@
                 width: 100%;
                 height: 1.2rem;
                 background-color: #f26800;
-                z-index: 10; /* 목차보다 뒤에 */
+                z-index: 10; 
             }
 
-            /* Bar가 추가되었으므로 Bar 아래부터 콘텐츠 시작 (패딩으로 조절) */
             section:not(#slide-1) {
                 padding-top: calc(5vh + 1.2rem); 
             }
@@ -88,7 +81,7 @@
             /* 표지 슬라이드 (1번) 특별 스타일 */
             #slide-1 {
                 flex-direction: row;
-                justify-content: center; /* 표지는 중앙 정렬 */
+                justify-content: center; 
                 align-items: center;
                 padding: 5vh 8vw;
             }
@@ -152,16 +145,16 @@
             /* Q&A, 감사 슬라이드 */
             #slide-10 {
                 align-items: center;
-                justify-content: center; /* Q&A는 중앙 정렬 */
+                justify-content: center; 
                 text-align: center;
-                padding-top: 5vh; /* Bar 패딩 리셋 */
+                padding-top: 5vh; 
             }
             
             #slide-11 {
                  align-items: center;
-                 justify-content: center; /* 참고문헌도 중앙 정렬 */
+                 justify-content: center; 
                  text-align: center;
-                 padding-top: calc(5vh + 1.2rem); /* Bar 패딩 적용 */
+                 padding-top: calc(5vh + 1.2rem); 
             }
 
             /* 공통 헤더 (제목) */
@@ -197,18 +190,16 @@
                 margin: 1rem 0 0.5rem 0;
                 font-weight: 600;
                 width: 100%;
-                box-sizing: border-box; /* 패딩 포함 */
+                box-sizing: border-box; 
             }
             
-            /* h3 뒤에 오는 ul의 상단 여백 제거 */
             h3 + ul {
                 margin-top: 0.5rem;
             }
             
-            /* h3, ul 등 콘텐츠 블록이 100% 너비를 갖도록 함 */
             ul, .quote-note, .method-process, table {
                 width: 100%;
-                box-sizing: border-box; /* 패딩/테두리 포함 */
+                box-sizing: border-box; 
             }
 
             /* 공통 본문 텍스트 */
@@ -262,7 +253,7 @@
             }
             #slide-4 .step {
                 flex: 1;
-                min-width: 0; /* flex-shrink 허용 */
+                min-width: 0; 
                 background-color: #f9f9f9;
                 border: 1px solid #ddd;
                 border-top: 4px solid #f26800;
@@ -397,6 +388,7 @@
                 z-index: 1000;
                 display: flex;
                 gap: 15px;
+                align-items: center; /* 아이템 중앙 정렬 */
             }
             .nav-btn {
                 background-color: #f26800;
@@ -419,13 +411,64 @@
                 background-color: #d95d00;
                 transform: translateY(-2px);
             }
-            /* 인쇄 버튼 */
             .print-btn {
                 background-color: #555;
             }
             .print-btn:hover {
                 background-color: #333;
             }
+            
+            /* 인쇄 도움말 버튼 */
+            #print-help {
+                position: relative;
+            }
+            .help-icon {
+                background-color: #007bff;
+                color: white;
+                border-radius: 50%;
+                width: 24px;
+                height: 24px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: help;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: -10px; /* 인쇄 버튼과 살짝 겹치게 */
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+            /* 도움말 툴팁 */
+            .tooltip {
+                display: none;
+                position: absolute;
+                bottom: 125%; /* 버튼 위로 */
+                left: 50%;
+                transform: translateX(-50%);
+                width: 250px;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 10px;
+                z-index: 1001;
+                font-size: 0.8rem;
+                line-height: 1.5;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            }
+            .tooltip::after { /* 말꼬리 */
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #333 transparent transparent transparent;
+            }
+            #print-help:hover .tooltip {
+                display: block;
+            }
+
 
             /* 참고문헌 스타일 */
             #slide-11 {
@@ -447,17 +490,19 @@
             }
         }
         
-        /* --- PDF 인쇄 전용 스타일 --- */
+        /* --- PDF 인쇄 전용 스타일 (디자인 유지) --- */
         @media print {
             html {
                 font-size: 10pt; /* 인쇄용 폰트 크기 고정 */
             }
             body {
-                background: #fff;
+                background: #fff !important; /* 강제 */
                 color: #000;
                 overflow: visible;
                 padding: 0;
                 margin: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
 
             /* 화면 전용 UI 모두 숨기기 */
@@ -467,41 +512,140 @@
 
             /* 모든 슬라이드를 인쇄용으로 보이게 설정 */
             section {
-                display: flex !important; /* !important로 강제 */
+                display: flex !important;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
                 width: 100%;
-                height: 98vh; /* A4 한 페이지에 맞춤 (약간의 여백) */
-                padding: 2cm 1.5cm; /* 인쇄 여백 */
+                height: 98vh; /* A4 한 페이지에 맞춤 */
+                padding: 2cm 1.5cm;
                 box-sizing: border-box;
-                overflow: hidden; /* 페이지 넘치는 내용 자르기 */
-                page-break-after: always; /* 각 슬라이드 후 페이지 넘김 */
-                background: #fff;
+                overflow: hidden; 
+                page-break-after: always; 
+                background: #fff !important; /* 강제 */
                 border: none;
                 box-shadow: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
 
-            /* 인쇄 시 슬라이드 내부 스크롤 금지 */
             section {
                 overflow-y: hidden;
             }
 
-            /* Bar 숨기기 */
+            /* Bar 디자인 유지 */
             section:not(#slide-1)::before {
-                display: none;
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 1rem; /* 1.2rem -> 1rem */
+                background-color: #f26800 !important; /* 강제 */
+                z-index: 10;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
             
-            /* Bar가 차지하던 패딩 리셋 */
             section:not(#slide-1) {
-                padding-top: 2cm; 
+                padding-top: calc(2cm + 1rem); /* Bar 공간 확보 */
             }
             
-            /* 표지 중앙 정렬 */
             #slide-1 {
                 justify-content: center;
                 align-items: center;
                 flex-direction: row;
+            }
+
+            /* 표지 정보 박스 디자인 유지 */
+            #slide-1 .presenter-info-box {
+                background-color: #f9f9f9 !important; /* 강제 */
+                border-left: 5px solid #f26800 !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            /* h3 레이어 디자인 유지 */
+            h3 {
+                color: #f26800 !important; /* 강제 */
+                background-color: #fcfcfc !important; /* 강제 */
+                border-left: 4px solid #f26800 !important; /* 강제 */
+                border-bottom: 1px solid #f0f0f0 !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* 인용구 디자인 유지 */
+            .quote-note {
+                background-color: #f9f9f9 !important; /* 강제 */
+                border-left: 5px solid #f26800 !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            /* 프로세스 플로우 디자인 유지 */
+            #slide-4 .step {
+                background-color: #f9f9f9 !important; /* 강제 */
+                border: 1px solid #ddd !important; /* 강제 */
+                border-top: 4px solid #f26800 !important; /* 강제 */
+                box-shadow: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            #slide-4 .arrow {
+                color: #f26800 !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* 테이블 헤더 디자인 유지 */
+            th {
+                background-color: #f26800 !important; /* 강제 */
+                color: white !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            td {
+                background-color: #fafafa !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            td.example {
+                background-color: #f9f9f9 !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* 하이라이트 디자인 유지 */
+            .highlight-pos {
+                background-color: #eaf7e6 !important; /* 강제 */
+                color: #3a632b !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .highlight-mid {
+                background-color: #fef4e0 !important; /* 강제 */
+                color: #7c5a0a !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .highlight-neg {
+                background-color: #fff2e8 !important; /* 강제 */
+                color: #a14a00 !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            /* 가치 목록 디자인 유지 */
+            .value-list {
+                background-color: #f9f9f9 !important; /* 강제 */
+                border: 1px solid #eee !important; /* 강제 */
+                border-left: 4px solid #f26800 !important; /* 강제 */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
 
             /* Q&A, 참고문헌 중앙 정렬 */
@@ -521,14 +665,6 @@
             .quote-note { font-size: 10pt; }
             #slide-4 .step p { font-size: 9pt; }
             #slide-11 ul { font-size: 8pt; columns: 1; } /* 참고문헌은 1단으로 */
-
-            /* 인쇄 시 하이라이트 배경색이 보이도록 강제 (브라우저 설정 필요할 수 있음) */
-            .highlight-pos, .highlight-mid, .highlight-neg {
-                background-color: #eee !important;
-                color: #000 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
             
             /* 인쇄 시 링크 밑줄 제거 */
             a { text-decoration: none; color: #000; }
@@ -902,6 +1038,14 @@
         <button class="nav-btn" onclick="prevSlide()">&#8249;</button>
         <button class="nav-btn" onclick="nextSlide()">&#8250;</button>
         <button class="nav-btn print-btn" onclick="window.print()" title="전체 페이지 PDF 인쇄">&#128424;</button>
+        <!-- 인쇄 도움말 버튼 -->
+        <div id="print-help">
+            <span class="help-icon">?</span>
+            <div class="tooltip">
+                <strong>PDF 인쇄 팁:</strong>
+                디자인이 모두 나오게 하려면, 인쇄 대화상자의 '설정 더보기'에서 <strong>'배경 그래픽'</strong> 옵션을 꼭 체크하세요.
+            </div>
+        </div>
     </div>
 
     <script>
