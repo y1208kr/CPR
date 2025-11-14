@@ -6,23 +6,24 @@
     <title>AI 코칭 역량 평가 발표자료</title>
     <style>
         /*
-         * === CSS 재설계 (v9) ===
-         * 1. 스크롤바 완전 제거 (overflow: hidden)
-         * 2. 폰트 기준을 'vw'(너비) -> 'vh'(높이)로 변경. 13인치 노트북의 좁은 높이에 자동 반응.
-         * font-size: clamp(10px, 1.5vh, 18px);
-         * 3. 'justify-content: center' (수직 중앙 정렬) 복원 -> 상단 쏠림 해결.
-         * 4. 'vh' 기준에 맞춰 모든 여백(rem)과 줄간격(line-height) 재조정.
+         * === CSS 재설계 (v10) ===
+         * 1. 폰트 기준을 'vh'(높이) -> 'vw'(너비)로 변경. 13인치에서도 가독성 좋은 폰트 크기 확보.
+         * font-size: clamp(14px, 1.2vw, 20px);
+         * 2. 'justify-content: center' -> 'flex-start'로 변경. (상단 정렬)
+         * 3. 'padding-top: 5vh'를 주어 '위로 뭉침' 현상 방지.
+         * 4. 'section'에 'overflow-y: auto;'를 적용, 13인치에서 표가 넘칠 경우 안전 스크롤 확보.
+         * 5. 전체적인 폰트/여백(rem) 크기를 상향 조정하여 1920x1080 화면을 꽉 채움.
          */
 
         /* 기본 스타일 */
         html {
             /*
-             * 폰트 크기를 뷰포트 '높이(vh)'에 반응하도록 설정
-             * 최소 10px, 화면 높이의 1.5%를 기본, 최대 18px
-             * 13인치(약 800px 높이) -> 1.5vh = 12px
-             * 24인치(약 1080px 높이) -> 1.5vh = 16.2px
+             * 폰트 크기를 뷰포트 '너비(vw)'에 반응하도록 설정
+             * 최소 14px, 화면 너비의 1.2%를 기본, 최대 20px
+             * 13인치(약 1440px 너비) -> 1.2vw = 17.28px
+             * 24인치(약 1920px 너비) -> 1.2vw = 23.04px (최대 20px 적용)
              */
-            font-size: clamp(10px, 1.5vh, 18px);
+            font-size: clamp(14px, 1.2vw, 20px);
         }
         
         body {
@@ -53,17 +54,19 @@
             height: 100vh;
             display: none; /* 기본적으로 숨김 */
             flex-direction: column;
-            /* 수직 중앙 정렬 (상단 쏠림 방지) */
-            justify-content: center; 
+            /* 수직 상단 정렬 */
+            justify-content: flex-start; 
             align-items: center;
             background-color: #fff;
             position: absolute;
             top: 0;
             left: 0;
             box-sizing: border-box;
-            /* 화면 높이에 반응하는 상/하 여백 */
+            /* 화면 높이에 반응하는 상/하 여백 + 좌우 여백 */
             padding: 5vh 8vw; 
-            overflow: hidden; /* 슬라이드 내부 스크롤도 금지 */
+            /* * 13인치 등 좁은 화면에서 콘텐츠 넘칠 시 '내부' 스크롤
+             */
+            overflow-y: auto;
         }
 
         /* 첫 번째 슬라이드는 보이도록 설정 */
@@ -81,6 +84,7 @@
             width: 100%;
             height: 1.2rem;
             background-color: #f26800;
+            z-index: 10; /* 목차보다 뒤에 */
         }
 
         /* Bar가 추가되었으므로 Bar 아래부터 콘텐츠 시작 (패딩으로 조절) */
@@ -95,22 +99,24 @@
             justify-content: space-between;
             align-items: center;
             padding: 5vh 8vw;
+            /* 표지는 중앙 정렬 복원 */
+            justify-content: center;
         }
 
         #slide-1 .title-main {
             flex-basis: 60%;
-            padding-right: 2rem;
+            padding-right: 2.5rem; /* 여백 증가 */
         }
         
         #slide-1 .title-authors {
-            font-size: 1.25rem;
+            font-size: 1.3rem; /* 폰트 증가 */
             color: #555;
             font-weight: 500;
             margin: 0;
         }
 
         #slide-1 .title-text {
-            font-size: 2.6rem; 
+            font-size: 2.8rem; /* 폰트 증가 */
             color: #000;
             margin: 1rem 0;
             line-height: 1.3;
@@ -118,13 +124,13 @@
         }
 
         #slide-1 .title-journal {
-            font-size: 1.15rem;
+            font-size: 1.25rem; /* 폰트 증가 */
             color: #333;
             margin: 0;
         }
         
         #slide-1 .title-journal-info {
-            font-size: 1rem; 
+            font-size: 1.1rem; /* 폰트 증가 */
             color: #555;
             margin-top: 0.5rem;
             font-weight: bold;
@@ -134,71 +140,72 @@
             flex-basis: 35%;
             background-color: #f9f9f9;
             border-left: 5px solid #f26800;
-            padding: 1.5rem; /* 여백 축소 */
+            padding: 2rem; /* 여백 증가 */
             border-radius: 8px;
         }
 
         #slide-1 .presenter-info-box h2 {
-            font-size: 1.4rem;
+            font-size: 1.5rem; /* 폰트 증가 */
             color: #f26800;
             border-bottom: 2px solid #f26800;
-            padding-bottom: 0.5rem; /* 여백 축소 */
+            padding-bottom: 0.8rem; /* 여백 증가 */
             margin-top: 0;
-            margin-bottom: 1rem; /* 여백 축소 */
+            margin-bottom: 1.2rem; /* 여백 증가 */
         }
 
         #slide-1 .presenter-info-box p {
-            font-size: 1.1rem;
-            margin: 0.5rem 0; /* 여백 축소 */
+            font-size: 1.2rem; /* 폰트 증가 */
+            margin: 0.8rem 0; /* 여백 증가 */
             line-height: 1.6;
         }
 
         /* Q&A, 감사 슬라이드 */
-        #slide-10,
-        #slide-11 {
-            align-items: center;
-            justify-content: center; 
-            text-align: center;
-        }
         #slide-10 {
+            align-items: center;
+            justify-content: center; /* Q&A는 중앙 정렬 */
+            text-align: center;
             padding-top: 5vh; /* Bar 패딩 리셋 */
         }
+        
         #slide-11 {
+             align-items: center;
+             justify-content: center; /* 참고문헌도 중앙 정렬 */
+             text-align: center;
              padding-top: calc(5vh + 1.2rem); /* Bar 패딩 적용 */
         }
 
 
         /* 공통 헤더 (제목) */
         h2 {
-            font-size: 2.2rem;
+            font-size: 2.4rem; /* 폰트 증가 */
             color: #f26800;
             margin-top: 0;
-            margin-bottom: 1rem; /* 여백 축소 */
-            padding-bottom: 0.5rem; /* 여백 축소 */
+            margin-bottom: 1.2rem; /* 여백 증가 */
+            padding-bottom: 0.8rem; /* 여백 증가 */
             border-bottom: 3px solid #f26800;
             width: 100%;
         }
 
         /* 공통 리드문 */
         .lead-text {
-            font-size: 1.4rem;
+            font-size: 1.5rem; /* 폰트 증가 */
             font-weight: bold;
             color: #555;
-            margin-bottom: 1rem; /* 여백 축소 */
+            margin-bottom: 1.2rem; /* 여백 증가 */
             line-height: 1.5;
             width: 100%;
         }
 
         /* h3 (서브헤더) 레이어 디자인 */
         h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem; /* 폰트 증가 */
             color: #f26800;
             background-color: #fcfcfc;
-            padding: 0.6rem 1rem; /* 여백 축소 */
+            padding: 0.8rem 1.2rem; /* 여백 증가 */
             border-radius: 5px;
             border-left: 4px solid #f26800;
             border-bottom: 1px solid #f0f0f0;
-            margin: 0.8rem 0 0.4rem 0; /* 여백 축소 */
+            margin: 1rem 0 0.5rem 0; /* 여백 증가 */
             font-weight: 600;
             width: 100%;
             box-sizing: border-box; /* 패딩 포함 */
@@ -206,7 +213,7 @@
         
         /* h3 뒤에 오는 ul의 상단 여백 제거 */
         h3 + ul {
-            margin-top: 0.4rem; /* 여백 축소 */
+            margin-top: 0.5rem; /* 여백 증가 */
         }
         
         /* h3, ul 등 콘텐츠 블록이 100% 너비를 갖도록 함 */
@@ -218,19 +225,19 @@
 
         /* 공통 본문 텍스트 */
         p, li {
-            font-size: 1.1rem;
-            line-height: 1.6; /* 줄간격 유지 */
-            margin: 0.2rem 0; /* 여백 축소 */
+            font-size: 1.2rem; /* 폰트 증가 */
+            line-height: 1.65; /* 줄간격 증가 */
+            margin: 0.3rem 0; /* 여백 증가 */
             word-break: keep-all;
         }
 
         ul {
-            padding-left: 25px;
-            margin-top: 0.5rem; /* 여백 축소 */
+            padding-left: 30px; /* 여백 증가 */
+            margin-top: 0.8rem; /* 여백 증가 */
         }
 
         ul li {
-            margin-bottom: 0.4rem; /* 여백 축소 */
+            margin-bottom: 0.6rem; /* 여백 증가 */
         }
 
         /* 주요 가치 목록 (레이어 디자인) */
@@ -238,19 +245,19 @@
             background-color: #f9f9f9;
             border: 1px solid #eee;
             border-left: 4px solid #f26800;
-            padding: 0.8rem 0.8rem 0.8rem 1.5rem; /* 여백 축소 */
+            padding: 1rem 1rem 1rem 2rem; /* 여백 증가 */
             border-radius: 5px;
-            margin-top: 0.4rem; /* 여백 축소 */
+            margin-top: 0.5rem; /* 여백 증가 */
         }
 
         /* 인용구 스타일 */
         .quote-note {
             background-color: #f9f9f9;
             border-left: 5px solid #f26800;
-            padding: 0.6rem 1rem; /* 여백 축소 */
-            margin-top: 0.8rem; /* 여백 축소 */
+            padding: 0.8rem 1.2rem; /* 여백 증가 */
+            margin-top: 1rem; /* 여백 증가 */
             font-style: italic;
-            font-size: 1rem;
+            font-size: 1.1rem; /* 폰트 증가 */
             color: #444;
             line-height: 1.6;
         }
@@ -262,8 +269,8 @@
         #slide-4 .method-process {
             display: flex;
             justify-content: space-between;
-            margin-top: 0.8rem; /* 여백 축소 */
-            gap: 0.6rem; /* 여백 축소 */
+            margin-top: 1rem; /* 여백 증가 */
+            gap: 0.8rem; /* 여백 증가 */
         }
         #slide-4 .step {
             flex: 1;
@@ -271,27 +278,27 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-top: 4px solid #f26800;
-            padding: 0.6rem; /* 여백 축소 */
+            padding: 0.8rem; /* 여백 증가 */
             border-radius: 5px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         #slide-4 .step h3 {
-            font-size: 1.1rem;
+            font-size: 1.2rem; /* 폰트 증가 */
             color: #f26800;
-            margin: 0 0 0.4rem 0; /* 여백 축소 */
+            margin: 0 0 0.5rem 0; /* 여백 증가 */
             background: none;
             border: none;
             padding: 0;
             width: auto;
         }
         #slide-4 .step p {
-            font-size: 0.9rem;
+            font-size: 1rem; /* 폰트 증가 */
             line-height: 1.5;
             margin: 0;
         }
         #slide-4 .arrow {
-            font-size: 2rem;
+            font-size: 2.2rem; /* 폰트 증가 */
             color: #f26800;
             display: flex;
             align-items: center;
@@ -303,23 +310,23 @@
         /* 결과 테이블 (슬라이드 6, 7) */
         table {
             border-collapse: collapse;
-            margin-top: 0.5rem; /* 여백 축소 */
-            font-size: 0.85rem; /* 폰트 축소 */
+            margin-top: 0.8rem; /* 여백 증가 */
+            font-size: 1rem; /* 폰트 증가 */
             table-layout: auto;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 0.5rem 0.8rem; /* 여백 축소 */
+            padding: 0.8rem 1rem; /* 여백 증가 */
             text-align: left;
             vertical-align: top;
-            line-height: 1.5; /* 줄간격 축소 */
+            line-height: 1.6; /* 줄간격 증가 */
             word-break: keep-all;
         }
         th {
             background-color: #f26800;
             color: white;
             text-align: center;
-            font-size: 0.9rem; /* 폰트 축소 */
+            font-size: 1.1rem; /* 폰트 증가 */
             font-weight: bold;
         }
         td {
@@ -354,7 +361,7 @@
 
         td.example { 
             background-color: #f9f9f9; 
-            font-size: 0.9em;
+            font-size: 0.95em; /* 폰트 증가 */
         }
 
 
@@ -378,7 +385,7 @@
             width: auto;
         }
         #slide-nav li {
-            font-size: 0.85rem;
+            font-size: 0.9rem; /* 폰트 증가 */
             margin: 4px 0;
             padding: 3px 0;
             cursor: pointer;
@@ -429,20 +436,20 @@
 
         /* 참고문헌 스타일 */
         #slide-11 {
-            justify-content: center; /* 중앙 정렬 */
+            justify-content: center;
             text-align: left;
         }
         #slide-11 ul {
             padding-left: 0;
             list-style: none;
-            font-size: 0.8rem;
-            line-height: 1.5;
+            font-size: 0.9rem; /* 폰트 증가 */
+            line-height: 1.6; /* 줄간격 증가 */
             text-align: left;
             columns: 2;
             column-gap: 30px;
         }
         #slide-11 li {
-            margin-bottom: 6px;
+            margin-bottom: 8px; /* 여백 증가 */
             word-break: break-all;
         }
         
@@ -790,8 +797,8 @@
 
         <!-- 슬라이드 10: 질의응답 -->
         <section id="slide-10">
-            <h2 style="font-size: 3em; border-bottom: none; color: #333;">9. 질의응답</h2>
-            <p style="font-size: 1.5em; margin-top: 20px;">경청해주셔서 감사합니다.</p>
+            <h2 style="font-size: 3.5em; border-bottom: none; color: #333;">9. 질의응답</h2>
+            <p style="font-size: 1.8em; margin-top: 20px;">경청해주셔서 감사합니다.</p>
         </section>
 
         <!-- 슬라이드 11: 참고문헌 -->
