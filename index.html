@@ -6,12 +6,12 @@
     <title>AI 코칭 역량 평가 발표자료</title>
     <style>
         /*
-         * === CSS 재설계 (v12) ===
-         * - v11(안정적인 레이아웃) 기반
+         * === CSS 재설계 (v13) ===
+         * - v12(안정적인 레이아웃) 기반
          * - @media print 스타일 수정:
-         * 1. 텍스트만 남던 문제 해결 -> 'print-color-adjust: exact;'를 모든 디자인 요소에 적용.
-         * 2. 오렌지 Bar, h3 레이어, 표 배경색, 하이라이트 등 스크린 디자인을 인쇄 시에도 유지.
-         * - '배경 그래픽' 옵션 안내를 위한 도움말 UI 추가.
+         * 1. (BUG FIX) 모든 슬라이드가 가운데 정렬되는 문제 해결.
+         * 2. 'section'은 'justify-content: flex-start' (상단 정렬)을 기본으로 설정.
+         * 3. 'slide-1'(표지)와 'slide-10'(Q&A)만 'justify-content: center'로 예외 처리.
          */
 
         /* 기본 스타일 (Screen Media) */
@@ -490,7 +490,7 @@
             }
         }
         
-        /* --- PDF 인쇄 전용 스타일 (디자인 유지) --- */
+        /* --- PDF 인쇄 전용 스타일 (v13 수정) --- */
         @media print {
             html {
                 font-size: 10pt; /* 인쇄용 폰트 크기 고정 */
@@ -510,12 +510,17 @@
                 display: none;
             }
 
-            /* 모든 슬라이드를 인쇄용으로 보이게 설정 */
+            /* * (BUG FIX V13)
+             * - 모든 슬라이드를 '상단 정렬(flex-start)'을 기본값으로 수정
+             * - align-items: center로 A4용지에서 가로 중앙 정렬은 유지
+             * - text-align: left로 텍스트 왼쪽 정렬 유지
+             */
             section {
                 display: flex !important;
                 flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
+                justify-content: flex-start; /* FIX: 상단 정렬이 기본 */
+                align-items: center;         /* A4용지 내 수평 중앙 정렬 */
+                text-align: left;            /* 텍스트 왼쪽 정렬 */
                 width: 100%;
                 height: 98vh; /* A4 한 페이지에 맞춤 */
                 padding: 2cm 1.5cm;
@@ -541,7 +546,7 @@
                 left: 0;
                 right: 0;
                 width: 100%;
-                height: 1rem; /* 1.2rem -> 1rem */
+                height: 1rem;
                 background-color: #f26800 !important; /* 강제 */
                 z-index: 10;
                 -webkit-print-color-adjust: exact;
@@ -552,11 +557,27 @@
                 padding-top: calc(2cm + 1rem); /* Bar 공간 확보 */
             }
             
+            /* --- 예외 처리 --- */
+            /* 표지는 수직/수평 중앙 정렬 */
             #slide-1 {
                 justify-content: center;
                 align-items: center;
                 flex-direction: row;
             }
+            /* Q&A는 수직/수평/텍스트 중앙 정렬 */
+            #slide-10 {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            /* 참고문헌은 상단 정렬, 텍스트는 좌측 정렬 (기본값) */
+            #slide-11 {
+                 justify-content: flex-start;
+                 align-items: center;
+                 text-align: left;
+            }
+            /* --- 예외 처리 끝 --- */
+
 
             /* 표지 정보 박스 디자인 유지 */
             #slide-1 .presenter-info-box {
@@ -585,7 +606,13 @@
             }
             
             /* 프로세스 플로우 디자인 유지 */
+            #slide-4 .method-process {
+                display: flex;
+                justify-content: space-between;
+                gap: 0.8rem;
+            }
             #slide-4 .step {
+                flex: 1;
                 background-color: #f9f9f9 !important; /* 강제 */
                 border: 1px solid #ddd !important; /* 강제 */
                 border-top: 4px solid #f26800 !important; /* 강제 */
@@ -595,6 +622,7 @@
             }
             #slide-4 .arrow {
                 color: #f26800 !important; /* 강제 */
+                flex-basis: 3%;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -621,20 +649,20 @@
 
             /* 하이라이트 디자인 유지 */
             .highlight-pos {
-                background-color: #eaf7e6 !important; /* 강제 */
-                color: #3a632b !important; /* 강제 */
+                background-color: #eaf7e6 !important; 
+                color: #3a632b !important; 
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
             .highlight-mid {
-                background-color: #fef4e0 !important; /* 강제 */
-                color: #7c5a0a !important; /* 강제 */
+                background-color: #fef4e0 !important; 
+                color: #7c5a0a !important; 
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
             .highlight-neg {
-                background-color: #fff2e8 !important; /* 강제 */
-                color: #a14a00 !important; /* 강제 */
+                background-color: #fff2e8 !important; 
+                color: #a14a00 !important; 
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -646,13 +674,6 @@
                 border-left: 4px solid #f26800 !important; /* 강제 */
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-            }
-
-            /* Q&A, 참고문헌 중앙 정렬 */
-            #slide-10, #slide-11 {
-                justify-content: center;
-                align-items: center;
-                text-align: center;
             }
             
             /* 인쇄용 폰트 크기 재조정 */
