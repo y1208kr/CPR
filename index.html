@@ -80,6 +80,34 @@
             line-height: 1.2;
         }
 
+        /* --- APA 7th 스타일 및 저널 정보 스타일 추가 --- */
+        .apa-citation {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 15px;
+        }
+        .apa-citation .title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .apa-citation .journal {
+            font-style: italic;
+        }
+        .journal-info {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dongguk-orange);
+            background-color: #f8f8f8;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: inline-block; /* 컨텐츠 크기에 맞춤 */
+            margin-top: 10px;
+        }
+        /* --- 스타일 추가 끝 --- */
+
+
         h2 {
             font-size: 2.0rem; /* 축소 */
             margin-bottom: 25px;
@@ -328,10 +356,17 @@
         <section id="slide-1">
             <div class="slide-content">
                 <h1>'Getting better all the time'</h1>
-                <p class="subtitle">
-                    전문 인간 코치 역량을 활용한 AI 코칭 에이전트 성능 평가<br>
-                    (Passmore, J., Tee, D. R., & Rutschmann, R. (2025))
-                </p>
+                
+                <div class="apa-citation">
+                    Passmore, J., Tee, D. R., & Rutschmann, R. (2025). 
+                    <span class="title">'Getting better all the time': using professional human coach competencies to evaluate the quality of AI coaching agent performance.</span>
+                    <span class="journal">Coaching: An International Journal of Theory, Research and Practice.</span>
+                </div>
+                
+                <div class="journal-info">
+                    Journal IF: 2.0 | Scopus Q2 | SSCI & Scopus Indexed
+                </div>
+
                 <div class="presenter-info">
                     <strong>과목명:</strong> 비즈니스코칭세미나<br>
                     <strong>담당교수:</strong> 김유천 교수님<br>
