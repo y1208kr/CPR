@@ -3,585 +3,537 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 코칭 역량 평가 (Passmore et al., 2025)</title>
-    <!-- 폰트 로드 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-    
+    <title>AI 코칭 역량 평가 발표자료</title>
     <style>
-        /* --- 기본 스타일 --- */
-        :root {
-            --dongguk-orange: #F26C22; /* 동국대학교 시그니처 오렌지 */
-            --text-primary: #212121; /* 본문 텍스트 */
-            --text-secondary: #424242; /* 부가 텍스트 */
-            --bg-light: #f9f9f9; /* 페이지 배경 */
-            --bg-slide: #ffffff; /* 슬라이드 배경 */
-            --border-color: #e0e0e0;
-        }
-
-        body, html {
+        /* 기본 스타일 */
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* 스크롤바 숨김 */
-            font-family: 'Nanum Gothic', 'Inter', sans-serif;
-            background-color: var(--bg-light);
+            overflow: hidden; /* 스크롤바 제거 */
+            /* 단어 단위 줄바꿈 적용 */
+            word-break: keep-all;
+            white-space: normal;
         }
 
-        /* --- 슬라이드 컨테이너 --- */
-        main {
-            display: flex;
-            width: 100%;
+        /* 슬라이드 컨테이너 */
+        #slide-container {
+            width: 100vw;
             height: 100vh;
-            overflow-x: hidden; /* 가로 스크롤 숨김 (버튼으로만 제어) */
-            overflow-y: hidden;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-        }
-
-        /* --- 개별 슬라이드 --- */
-        section {
-            min-width: 100vw;
-            height: 100vh;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            background-color: var(--bg-slide);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 60px; /* 좌우 여백 축소 */
-            box-sizing: border-box;
             position: relative;
         }
 
-        /* --- 슬라이드 콘텐츠 레이아웃 --- */
+        /* 개별 슬라이드 */
+        section {
+            width: 100%;
+            height: 100%;
+            display: none; /* 기본적으로 숨김 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            padding: 40px 80px;
+        }
+
+        /* 첫 번째 슬라이드는 보이도록 설정 */
+        section:first-of-type {
+            display: flex;
+        }
+
+        /* 슬라이드 공통 콘텐츠 래퍼 */
         .slide-content {
             width: 100%;
-            max-width: 1100px; /* 최대 너비 약간 축소 */
+            max-width: 1100px; /* 표준 PPT 느낌의 최대 너비 */
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: flex-start;
         }
 
-        /* --- 타이포그래피 (폰트 크기 축소) --- */
-        h1, h2, h3 {
-            margin: 0;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        h1 {
-            font-size: 3.0rem; /* 축소 */
-            color: var(--dongguk-orange);
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        /* --- APA 7th 스타일 및 저널 정보 스타일 추가 --- */
-        .apa-citation {
-            font-size: 1.15rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            font-family: 'Inter', sans-serif;
-            margin-bottom: 15px;
-        }
-        .apa-citation .title {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        .apa-citation .journal {
-            font-style: italic;
-        }
-        .journal-info {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--dongguk-orange);
-            background-color: #f8f8f8;
-            padding: 10px 15px;
-            border-radius: 8px;
-            display: inline-block; /* 컨텐츠 크기에 맞춤 */
-            margin-top: 10px;
-        }
-        /* --- 스타일 추가 끝 --- */
-
-
-        h2 {
-            font-size: 2.0rem; /* 축소 */
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--dongguk-orange);
-            color: var(--text-primary);
-        }
-
-        h3 {
-            font-size: 1.3rem; /* 축소 */
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-        }
-
-        p, li {
-            font-size: 1.05rem; /* 축소 */
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-
-        ul, ol {
-            padding-left: 25px;
-            margin-top: 5px;
-        }
-
-        strong {
-            color: var(--dongguk-orange);
-            font-weight: 700;
-        }
-
-        /* --- 특정 슬라이드 스타일 --- */
-
-        /* 1. 표지 슬라이드 */
+        /* 표지 슬라이드 (1번) */
         #slide-1 .slide-content {
-            justify-content: center;
-            text-align: left;
-        }
-        #slide-1 .subtitle {
-            font-size: 1.15rem; /* 축소 */
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-top: 10px;
-        }
-        #slide-1 .presenter-info {
-            margin-top: 50px;
-            font-size: 1.05rem; /* 축소 */
-            line-height: 1.8;
-            color: var(--text-primary);
+            background: linear-gradient(135deg, #ffffff 60%, #f26800 60%);
+            padding: 60px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            height: auto;
+            align-items: flex-start;
         }
 
-        /* 2. 리드문 (Lead) 스타일 */
-        .lead {
-            font-size: 1.2rem; /* 축소 */
-            font-weight: 600;
-            color: var(--text-primary);
-            background-color: #fffaf0;
-            padding: 18px;
-            border-left: 5px solid var(--dongguk-orange);
-            border-radius: 8px;
-            margin-bottom: 25px;
+        #slide-1 .title-section {
+            flex-basis: 60%;
+            padding-right: 40px;
+        }
+
+        #slide-1 h1 {
+            font-size: 2.2em; /* 2.4em -> 2.2em */
+            color: #000;
+            margin: 0;
+            line-height: 1.3;
+            /* APA 7th 스타일에 맞게 이탤릭체는 <i> 태그로 제어 */
         }
         
-        /* 3. 테이블 스타일 (역량 분석) */
+        #slide-1 .journal-info {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        #slide-1 .presenter-info {
+            flex-basis: 40%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            align-self: flex-start;
+        }
+
+        #slide-1 .presenter-info h2 {
+            font-size: 1.4em;
+            color: #f26800;
+            border-bottom: 2px solid #f26800;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        #slide-1 .presenter-info p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        /* Q&A, 감사 슬라이드 */
+        #slide-10 .slide-content,
+        #slide-11 .slide-content {
+            align-items: center;
+            text-align: center;
+        }
+
+        /* 공통 헤더 (제목) */
+        h2 {
+            font-size: 2.2em; /* 2.4em -> 2.2em */
+            color: #f26800;
+            margin-top: 0;
+            margin-bottom: 15px; /* 20px -> 15px */
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f26800;
+            width: 100%;
+        }
+
+        /* 공통 리드문 */
+        .lead-text {
+            font-size: 1.4em; /* 1.5em -> 1.4em */
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 25px; /* 30px -> 25px */
+            line-height: 1.5;
+        }
+
+        /* 공통 본문 텍스트 */
+        p, li {
+            font-size: 1.2em; /* 1.3em -> 1.2em */
+            line-height: 1.7; /* 1.8 -> 1.7 */
+            margin: 8px 0;
+            word-break: keep-all; /* 단어 단위 줄바꿈 */
+        }
+
+        ul {
+            padding-left: 25px;
+            margin-top: 15px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        /* 인용구 스타일 */
+        .quote-note {
+            width: 100%;
+            background-color: #f9f9f9;
+            border-left: 5px solid #f26800;
+            padding: 15px 20px;
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 1em;
+            color: #444;
+            line-height: 1.6;
+            box-sizing: border-box;
+            word-break: keep-all;
+        }
+        .quote-note strong {
+            color: #f26800;
+        }
+
+        /* 연구 방법 (슬라이드 4) 프로세스 스타일 */
+        #slide-4 .method-process {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #slide-4 .step {
+            flex-basis: 18%;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-top: 4px solid #f26800;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        #slide-4 .step h3 {
+            font-size: 1.1em;
+            color: #f26800;
+            margin: 0 0 10px 0;
+        }
+        #slide-4 .step p {
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin: 0;
+        }
+        #slide-4 .arrow {
+            font-size: 2.5em;
+            color: #f26800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-basis: 3%;
+        }
+
+        /* 결과 테이블 (슬라이드 6, 7) */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            font-size: 0.95em; /* 테이블 폰트 크기 조정 */
+            table-layout: fixed; /* 테이블 레이아웃 고정 */
         }
         th, td {
-            border: 1px solid var(--border-color);
-            padding: 12px 15px; /* 패딩 축소 */
+            border: 1px solid #ddd;
+            padding: 10px 12px; /* 12px -> 10px 12px */
             text-align: left;
             vertical-align: top;
-            font-size: 0.95rem; /* 축소 */
+            line-height: 1.6;
+            word-break: keep-all; /* 단어 단위 줄바꿈 */
         }
         th {
-            background-color: #f8f8f8;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        td:first-child {
-            font-weight: 700;
-            width: 18%; /* 너비 약간 축소 */
-        }
-        .strength { color: #2e7d32; }
-        .weakness { color: #d32f2f; }
-        /* --- 예시 열 스타일 --- */
-        td.example {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            background-color: #fcfcfc;
-            color: #333;
-        }
-        td.example strong {
-            color: var(--text-primary);
-        }
-
-        /* 4. 인용 (Quote) 스타일 (신규) */
-        .quote-note {
-            background-color: #f8f8f8;
-            border-left: 4px solid var(--dongguk-orange);
-            padding: 15px 20px;
-            margin-top: 25px;
-            border-radius: 4px;
-        }
-        .quote-note .original {
-            font-family: 'Inter', sans-serif;
-            font-style: italic;
-            color: #555;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-        .quote-note .translation {
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-        }
-
-        /* --- 연구 방법 프로세스 플로우 스타일 --- */
-        .process-flow {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        .process-step {
-            flex: 1;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
+            background-color: #f26800;
+            color: white;
             text-align: center;
-            position: relative;
-            background-color: #fcfcfc;
+            font-size: 1.05em;
+            font-weight: bold;
         }
-        .process-step h4 {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--dongguk-orange);
-            margin-bottom: 10px;
+        td {
+            background-color: #fafafa;
         }
-        .process-step p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 0;
+        tr:nth-child(even) td {
+            background-color: #fdfdfd;
         }
-        .process-step::after {
-            content: '→';
-            position: absolute;
-            right: -22px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2rem;
-            color: var(--dongguk-orange);
-            font-weight: 700;
-        }
-        .process-step:last-child::after {
-            content: none;
-        }
-        /* --- 스타일 끝 --- */
+        td.strength { background-color: #e6f7ff; }
+        td.weakness { background-color: #fff2e8; }
+        td.example { background-color: #f9f9f9; font-size: 0.95em; }
 
-
-        /* 5. 2단 레이아웃 */
-        .two-columns {
-            display: flex;
-            gap: 30px;
-            width: 100%;
-        }
-        .column { flex: 1; }
-
-        /* 6. 마지막 슬라이드 (Q&A) */
-        #slide-10 .slide-content { text-align: center; }
-        #slide-10 h1 { font-size: 3.5rem; } /* 축소 */
+        /* 테이블 너비 조정 */
+        .table-c1-c4 th:nth-child(1), .table-c1-c4 td:nth-child(1) { width: 14%; } /* 역량 */
+        .table-c1-c4 th:nth-child(2), .table-c1-c4 td:nth-child(2) { width: 11%; } /* 평가 */
+        .table-c1-c4 th:nth-child(3), .table-c1-c4 td:nth-child(3) { width: 18%; } /* 강점 */
+        .table-c1-c4 th:nth-child(4), .table-c1-c4 td:nth-child(4) { width: 22%; } /* 한계 */
+        .table-c1-c4 th:nth-child(5), .table-c1-c4 td:nth-child(5) { width: 35%; } /* 예시 */
         
-        /* 7. 참고문헌 슬라이드 */
-        #slide-11 ul {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            padding-left: 15px;
-            columns: 2;
-            gap: 40px;
-        }
-         #slide-11 li {
-            font-size: 0.8rem; /* 축소 */
-             margin-bottom: 8px;
-         }
+        .table-c5-c8 th:nth-child(1), .table-c5-c8 td:nth-child(1) { width: 14%; } /* 역량 */
+        .table-c5-c8 th:nth-child(2), .table-c5-c8 td:nth-child(2) { width: 11%; } /* 평가 */
+        .table-c5-c8 th:nth-child(3), .table-c5-c8 td:nth-child(3) { width: 18%; } /* 강점 */
+        .table-c5-c8 th:nth-child(4), .table-c5-c8 td:nth-child(4) { width: 22%; } /* 한계 */
+        .table-c5-c8 th:nth-child(5), .table-c5-c8 td:nth-child(5) { width: 35%; } /* 예시 */
 
-        /* --- 우측 상단 내비게이션 (TOC) --- */
+
+        /* 우측 상단 목차 (TOC) */
         #slide-nav {
             position: fixed;
-            right: 40px;
-            top: 40px;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.8);
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(5px);
-            padding: 10px 15px;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         #slide-nav ul {
             list-style: none;
-            padding: 0;
             margin: 0;
+            padding: 0;
         }
         #slide-nav li {
-            margin-bottom: 5px;
+            font-size: 0.85em;
+            margin: 5px 0;
+            padding: 3px 0;
+            cursor: pointer;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.2s;
+            word-break: keep-all;
         }
-        #slide-nav li:last-child {
-            margin-bottom: 0;
+        #slide-nav li:hover {
+            color: #000;
         }
-        #slide-nav a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-        #slide-nav a.active {
-            color: var(--dongguk-orange);
-            font-weight: 800;
-        }
-        #slide-nav a:hover {
-            color: var(--text-primary);
+        #slide-nav li.current {
+            color: #f26800;
+            font-weight: bold;
         }
 
-        /* --- 슬라이드 번호 --- */
-        .slide-number {
-            position: absolute;
-            bottom: 30px;
-            left: 60px; /* 위치 변경 */
-            font-size: 1rem;
-            font-weight: 600;
-            color: #aaa;
-        }
-
-        /* --- 슬라이드 화살표 컨트롤 --- */
-        #slide-controls {
+        /* 하단 네비게이션 버튼 */
+        #nav-buttons {
             position: fixed;
             bottom: 20px;
-            right: 40px;
-            z-index: 101;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
-        #slide-controls button {
-            background-color: var(--text-primary);
+        .nav-btn {
+            background-color: #f26800;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            font-size: 1.5rem;
-            font-weight: 700;
+            width: 45px; /* 50px -> 45px */
+            height: 45px; /* 50px -> 45px */
+            font-size: 1.5em; /* 1.8em -> 1.5em */
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            visibility: visible;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
-        #slide-controls button:hover {
-            background-color: var(--dongguk-orange);
+        .nav-btn:hover {
+            background-color: #d95d00;
+            transform: translateY(-2px);
         }
-        #slide-controls button:active {
-            transform: scale(0.95);
+
+        /* 참고문헌 스타일 */
+        #slide-11 ul {
+            padding-left: 0;
+            list-style: none;
+            font-size: 0.75em;
+            line-height: 1.6;
+            text-align: left;
+            columns: 2;
+            column-gap: 40px;
         }
-        #slide-controls button.hidden {
-            visibility: hidden; /* show/hide 대신 visibility 사용 */
+        #slide-11 li {
+            margin-bottom: 8px;
+            word-break: break-all; /* 참고문헌은 영어이므로 break-all */
         }
+
     </style>
 </head>
 <body>
 
-    <!-- 우측 상단 내비게이션 (TOC) -->
+    <!-- 우측 상단 목차 -->
     <nav id="slide-nav">
         <ul>
-            <li><a href="#slide-1" data-tooltip="표지" class="active">1. 표지</a></li>
-            <li><a href="#slide-2" data-tooltip="서론">2. 서론</a></li>
-            <li><a href="#slide-3" data-tooltip="핵심 용어 (ICF)">3. 핵심 용어</a></li>
-            <li><a href="#slide-4" data-tooltip="연구 방법">4. 연구 방법</a></li>
-            <li><a href="#slide-5" data-tooltip="연구 결과 (종합)">5. 결과 (종합)</a></li>
-            <li><a href="#slide-6" data-tooltip="결과 상세 (C1-C4)">6. 결과 (C1-C4)</a></li>
-            <li><a href="#slide-7" data-tooltip="결과 상세 (C5-C8)">7. 결과 (C5-C8)</a></li>
-            <li><a href="#slide-8" data-tooltip="논의 및 시사점">8. 논의</a></li>
-            <li><a href="#slide-9" data-tooltip="결론 및 향후 연구">9. 결론</a></li>
-            <li><a href="#slide-10" data-tooltip="Q&A">10. Q&A</a></li>
-            <li><a href="#slide-11" data-tooltip="참고문헌">11. 참고문헌</a></li>
+            <li class="current" onclick="showSlide(1)">1. 표지</li>
+            <li onclick="showSlide(2)">2. 서론</li>
+            <li onclick="showSlide(3)">3. 핵심 용어</li>
+            <li onclick="showSlide(4)">4. 연구 방법</li>
+            <li onclick="showSlide(5)">5. 결과 (종합)</li>
+            <li onclick="showSlide(6)">6. 결과 (C1-C4)</li>
+            <li onclick="showSlide(7)">7. 결과 (C5-C8)</li>
+            <li onclick="showSlide(8)">8. 논의 및 시사점</li>
+            <li onclick="showSlide(9)">9. 결론</li>
+            <li onclick="showSlide(10)">10. 질의응답</li>
+            <li onclick="showSlide(11)">11. 참고문헌</li>
         </ul>
     </nav>
 
-    <!-- 슬라이드 컨트롤 버튼 -->
-    <div id="slide-controls">
-        <button id="prev-slide" class="hidden">&larr;</button>
-        <button id="next-slide">&rarr;</button>
-    </div>
-
     <!-- 슬라이드 컨테이너 -->
-    <main id="slide-container">
+    <div id="slide-container">
 
         <!-- 슬라이드 1: 표지 -->
         <section id="slide-1">
             <div class="slide-content">
-                <h1>'Getting better all the time'</h1>
-                
-                <div class="apa-citation">
-                    Passmore, J., Tee, D. R., & Rutschmann, R. (2025). 
-                    <span class="title">'Getting better all the time': using professional human coach competencies to evaluate the quality of AI coaching agent performance.</span>
-                    <span class="journal">Coaching: An International Journal of Theory, Research and Practice.</span>
+                <div class="title-section">
+                    <h1>
+                         Passmore, J., Tee, D. R., & Rutschmann, R. (2025). 'Getting better all the time': using professional human coach competencies to evaluate the quality of AI coaching agent performance. <i>Coaching: An International Journal of Theory, Research and Practice.</i>
+                        <br>
+                       
+                    </h1>
+                    <div class="journal-info">
+                        (Journal IF: 2.0 | Scopus Q2, SSCI (ESCI) & Scopus Indexed)
+                    </div>
                 </div>
-                
-                <div class="journal-info">
-                    Journal IF: 2.0 | Scopus Q2 | SSCI & Scopus Indexed
-                </div>
-
                 <div class="presenter-info">
-                    <strong>과목명:</strong> 비즈니스코칭세미나<br>
-                    <strong>담당교수:</strong> 김유천 교수님<br>
-                    <strong>발표일:</strong> 2025년 11월 15일<br>
-                    <strong>발표자:</strong> 염승빈 (동국대학교 경영학과 박사과정 3학기)
+                    <h2>비즈니스코칭세미나</h2>
+                    <p><strong>담당교수:</strong> 김유천 교수님</p>
+                    <p><strong>발표일:</strong> 2025년 11월 15일</p>
+                    <p><strong>발표자:</strong> 염승빈 (동국대학교 경영학과 박사과정 3학기)</p>
                 </div>
             </div>
-            <div class="slide-number">1 / 11</div>
         </section>
 
         <!-- 슬라이드 2: 서론 -->
         <section id="slide-2">
             <div class="slide-content">
                 <h2>1. 서론: AI 코칭의 실무 적합성 평가</h2>
-                <p class="lead">본 연구는 ICF 코치 역량 프레임워크를 기준으로 AI 코칭 에이전트의 '실무 적합성(fitness to practice)'을 평가함.</p>
-                
-                <h3>연구 배경: 3가지 관점의 대립</h3>
+                <p class="lead-text">
+                    본 연구는 ICF 코치 역량 프레임워크를 기준으로 AI 코칭 에이전트의 '실무 적합성(fitness to practice)'을 평가함.
+                </p>
+                <h3>연구 배경</h3>
                 <ul>
-                    <li><strong>AI Zoomers:</strong> AI가 인간 코치를 <strong>대체</strong>할 것 (Rauen, 2018).</li>
-                    <li><strong>AI Doomers:</strong> AI는 '진짜 코칭'이 아니며 위협이 되지 않음 (Bachkirova & Kemp, 2025).</li>
-                    <li><strong>AI Bloomers:</strong> AI가 인간 코치를 <strong>보완</strong>하고 생태계를 확장할 것 (Greif, 2018).</li>
+                    <li>AI 코칭 에이전트의 급격한 발전.</li>
+                    <li>AI가 코칭 시장에 미칠 영향에 대한 세 가지 관점 대립.
+                        <ul>
+                            <li><strong>AI Zoomers:</strong> AI가 인간 코치를 대체할 것 (Rauen, 2018).</li>
+                            <li><strong>AI Doomers:</strong> AI는 '진짜 코칭'이 아님 (Bachkirova & Kemp, 2025).</li>
+                            <li><strong>AI Bloomers:</strong> AI가 인간 코치를 보완할 것 (Greif, 2018).</li>
+                        </ul>
+                    </li>
                 </ul>
-
-                <h3>연구 목적 및 평가 기준</h3>
+                <h3>연구 목적 및 프레임워크</h3>
                 <ul>
-                    <li>이러한 논쟁 속에서, AI 코칭 에이전트의 <strong>현재 역량 수준</strong>을 객관적 기준으로 측정함.</li>
-                    <li>인간 코치 평가에 사용되는 <strong>ICF 역량 모델</strong>이 AI의 '행동(behavior)'을 평가하는 데 적합한 척도로 채택됨.</li>
+                    <li>이러한 논쟁 속에서, AI 코칭 에이전트의 현재 역량 수준을 객관적 기준으로 측정.</li>
+                    <li>인간 코치 평가에 사용되는 ICF 역량 모델이 AI의 '행동(behavior)'을 평가하는 데 적합한 척도로 채택됨.</li>
                 </ul>
-
                 <div class="quote-note">
-                    <p class="original">"Using a coach competency as a framework, this study uses a qualitative approach to assess a real-world Al coaching agent's 'behaviours'..." (Abstract, p.2)</p>
-                    <p class="translation">인용: "본 연구는 코치 역량을 프레임워크로 사용하여, 실제 AI 코칭 에이전트의 '행동'을 평가하기 위해 질적 접근법을 사용함."</p>
+                    <strong>Paper's Quote:</strong> "Using a coach competency as a framework, this study uses a qualitative approach to assess a real-world AI coaching agent’s 'behaviours'..." (p. 2)
+                    <br>
+                    <strong>(번역)</strong> "코치 역량을 프레임워크로 사용하여, 본 연구는 실제 AI 코칭 에이전트의 '행동'을 평가하기 위해 정성적 접근 방식을 사용함..."
                 </div>
             </div>
-            <div class="slide-number">2 / 11</div>
         </section>
 
-        <!-- 슬라이드 3: 핵심 용어 (기존 슬라이드 4) -->
+        <!-- 슬라이드 3: 핵심 용어 (순서 변경됨) -->
         <section id="slide-3">
             <div class="slide-content">
-                <h2>3. 핵심 용어 설명: 평가 기준의 이해 (ICF)</h2>
-                <p class="lead">연구의 핵심 평가 기준인 ICF 역량 클러스터와 자격 체계를 설명함.</p>
-
-                <div class="two-columns">
-                    <div class="column">
-                        <h3>ICF 4대 역량 클러스터 (8대 역량)</h3>
-                        <ol>
-                            <li><strong>A. 기초 (Foundation)</strong>
-                                <ul><li>C1: 윤리, C2: 마인드셋</li></ul>
-                            </li>
-                            <li><strong>B. 관계 공동 생성 (Co-Creating)</strong>
-                                <ul><li>C3: 코칭 합의, C4: 신뢰/안전</li></ul>
-                            </li>
-                            <li><strong>C. 효과적 의사소통 (Communicating)</strong>
-                                <ul><li>C5: 존재감, C6: 경청</li></ul>
-                            </li>
-                            <li><strong>D. 학습과 성장 촉진 (Cultivating)</strong>
-                                <ul><li>C7: 인식, C8: 성장</li></ul>
-                            </li>
-                        </ol>
-                    </div>
-                    <div class="column">
-                        <h3>ICF 자격 등급</h3>
+                <h2>2. 핵심 용어: 평가 기준의 이해</h2>
+                <p class="lead-text">
+                    연구의 평가 기준인 ICF 역량 클러스터와 자격 체계를 설명함.
+                </p>
+                <h3>ICF 4대 역량 클러스터 (8대 역량)</h3>
+                <ul>
+                    <li>A. 기초 (C1 윤리, C2 마인드셋)</li>
+                    <li>B. 관계 공동 생성 (C3 코칭 합의, C4 신뢰/안전)</li>
+                    <li>C. 효과적 의사소통 (C5 존재감, C6 경청)</li>
+                    <li>D. 학습과 성장 촉진 (C7 인식, C8 성장)</li>
+                </ul>
+                <h3>ICF 자격 등급 및 평가 척도</h3>
+                <ul>
+                    <li><strong>자격 등급:</strong> ACC (자격인증), PCC (전문 자격인증), MCC (마스터 자격인증)</li>
+                    <li><strong>평가 척도 (BARS, Markers):</strong>
                         <ul>
-                            <li><strong>ACC</strong> (Associate): 자격인증 코치 (초급)</li>
-                            <li><strong>PCC</strong> (Professional): 전문 자격인증 코치 (중급)</li>
-                            <li><strong>MCC</strong> (Master): 마스터 자격인증 코치 (최고급)</li>
+                            <li>BARS (Behavioural Anchored Rating Scale): 행동 기준 등급 척도 (ACC, MCC 평가용)</li>
+                            <li>Markers (구체적인 행동 지표): PCC 평가용</li>
                         </ul>
-                        <h3>평가 척도 (BARS & Markers)</h3>
-                        <ul>
-                            <li><strong>BARS:</strong> 행동 기준 등급 척도 (ACC, MCC 평가용)</li>
-                            <li><strong>Markers:</strong> 구체적인 행동 지표 (PCC 평가용)</li>
-                        </ul>
-                    </div>
-                </div>
-                
+                    </li>
+                </ul>
                 <div class="quote-note">
-                    <p class="original">"ICF Assessors evaluate each submission against the ICF Core Competencies using BARS or Markers linked to the relevant level (Campone, 2024; Totino & Fogolin, 2024)." (p.4)</p>
-                    <p class="translation">인용: "ICF 평가관은 각 제출물을 관련 등급(ACC, PCC, MCC)에 연결된 BARS 또는 Markers를 사용하여 ICF 핵심 역량에 대해 평가함."</p>
+                    <strong>Paper's Quote:</strong> "ICF Assessors evaluate each submission against the ICF Core Competencies using BARS or Markers linked to the relevant level (Campone, 2024; Totino & Fogolin, 2024)." (p. 5)
+                    <br>
+                    <strong>(번역)</strong> "ICF 평가관은 관련 등급(ACC, PCC, MCC)에 연결된 BARS 또는 Markers를 사용하여 ICF 핵심 역량에 따라 제출물을 평가함."
                 </div>
             </div>
-            <div class="slide-number">3 / 11</div>
         </section>
 
-        <!-- 슬라이드 4: 연구 방법 (기존 슬라이드 3) -->
+        <!-- 슬라이드 4: 연구 방법 (순서 변경됨 + 상세화) -->
         <section id="slide-4">
             <div class="slide-content">
-                <h2>4. 연구 방법: AI를 인간 코치처럼 평가하다</h2>
-                <p class="lead">AI(코치)가 관리자(클라이언트)를 코칭하고, 전문 평가관이 이 스크립트를 분석함.</p>
-                
-                <h3>연구 절차 (Procedure)</h3>
-                
-                <div class="process-flow">
-                    <div class="process-step">
-                        <h4>1. 참여자 모집</h4>
-                        <p>AI 코치 1명 (Alpina)<br>+<br>중간 관리자 43명 (Client)</p>
+                <h2>3. 연구 방법: AI를 인간 코치처럼 평가하다</h2>
+                <p class="lead-text">
+                    AI(코치)가 관리자(클라이언트)를 코칭하고, 전문 평가관이 이를 분석함.
+                </p>
+                <h3>연구 참여자</h3>
+                <ul>
+                    <li><strong>AI 코칭 에이전트:</strong> evoach사의 Alpina (GPT-4 기반 텍스트 코칭)</li>
+                    <li><strong>인간 클라이언트:</strong> 기술/엔지니어링 분야 중간 관리자 43명 참여</li>
+                    <li><strong>인간 평가관:</strong> ICF 전문 평가관 4명 (총 500개 이상 스크립트 평가 경험 보유)</li>
+                </ul>
+                <h3>연구 절차 (Process Flow)</h3>
+                <div class="method-process">
+                    <div class="step">
+                        <h3>Step 1. 참여자 모집</h3>
+                        <p>기술/엔지니어링 분야 중간 관리자 43명이 연구 참여에 자원함.</p>
                     </div>
-                    <div class="process-step">
-                        <h4>2. 코칭 세션 수행</h4>
-                        <p>GPT-4 기반 텍스트 코칭.<br>실제 업무 이슈를 주제로 대화.</p>
+                    <div class="arrow">&rarr;</div>
+                    <div class="step">
+                        <h3>Step 2. AI 코칭 수행</h3>
+                        <p>참여자들이 Alpina (AI 코치)와 실제 업무 이슈로 1:1 텍스트 코칭 세션 진행.</p>
                     </div>
-                    <div class="process-step">
-                        <h4>3. 데이터 스크리닝</h4>
-                        <p>43개 세션 중<br><strong>17개</strong>의 유효한<br>대화 스크립트 선별.</p>
+                    <div class="arrow">&rarr;</div>
+                    <div class="step">
+                        <h3>Step 3. 데이터 수집</h3>
+                        <p>43개 세션 중 17개의 유효한 분석 스크립트 확보 (10분 미만, 초점 없는 대화 제외).</p>
                     </div>
-                    <div class="process-step">
-                        <h4>4. 전문가 평가</h4>
-                        <p><strong>ICF 평가관 4명</strong>이<br>17개 스크립트를<br>무작위 배정받아 채점.</p>
+                    <div class="arrow">&rarr;</div>
+                    <div class="step">
+                        <h3>Step 4. 전문가 평가</h3>
+                        <p>4명의 ICF 전문 평가관이 17개 스크립트를 BARS/Markers 척도로 정성적 채점.</p>
                     </div>
-                    <div class="process-step">
-                        <h4>5. 질적 분석</h4>
-                        <p>ICF 역량 척도<br>(BARS, Markers)를<br>기준으로 역량 수준 판단.</p>
+                    <div class="arrow">&rarr;</div>
+                    <div class="step">
+                        <h3>Step 5. 데이터 분석</h3>
+                        <p>연구팀이 평가관의 피드백을 수집하여 AI 역량의 경향성과 패턴을 분석함.</p>
                     </div>
                 </div>
-
                 <div class="quote-note">
-                    <p class="original">"Assessors were invited to mark the submissions as if they were human coach submissions using the ICF (2020) competency frame..." (p.7)</p>
-                    <p class="translation">인용: "평가관들은 (AI 코칭) 제출물을 마치 인간 코치의 제출물처럼 ICF 역량 프레임을 사용하여 채점하도록 요청받음."</p>
+                    <strong>Paper's Quote:</strong> "Assessors were invited to mark the submissions as if they were human coach submissions using the ICF (2020) competency frame and the associated BARS... and Markers" (p. 7)
+                    <br>
+                    <strong>(번역)</strong> "평가관들은 ICF 역량 프레임과 관련 BARS 및 Markers를 사용하여, 마치 인간 코치의 제출물처럼 평가하도록 요청받음."
                 </div>
             </div>
-            <div class="slide-number">4 / 11</div>
         </section>
 
         <!-- 슬라이드 5: 연구 결과 (종합) -->
         <section id="slide-5">
             <div class="slide-content">
                 <h2>4. 연구 결과 (1): AI 코치의 역량 수준 (종합)</h2>
-                <p class="lead">AI 코치는 <strong>ACC 수준의 행동 기준을 충족</strong>했으며, PCC 수준은 부분적으로 달성함.</p>
-
-                <h3>ACC 수준과의 비교 (vs. 초급 인간 코치)</h3>
+                <p class="lead-text">
+                    AI 코치는 ACC 수준의 행동 기준을 충족했으며, PCC 수준은 부분적으로 달성함.
+                </p>
+                <h3>ACC 수준과의 비교</h3>
                 <ul>
-                    <li>AI 코치는 ACC BARS(행동 기준)와 일치하는(consistent with) 행동을 일관되게 보임.</li>
-                    <li>만약 AI가 인간 코치처럼 <strong>가장 잘한 세션 2개를 선별 제출</strong>할 경우, <strong>ACC 자격 획득이 가능할 것(would have secured)</strong>으로 판단됨.</li>
+                    <li>AI 코치는 ACC BARS와 일치하는(consistent with) 행동을 일관되게 보임.</li>
+                    <li>이는 "통과(Pass)"를 의미하는 것은 아니나, 인간 코치처럼 최상의 세션 2개를 선별 제출할 경우, <strong>ACC 자격 획득이 가능할 것(would have secured)</strong>으로 판단됨.</li>
                 </ul>
-
-                <h3>PCC 수준과의 비교 (vs. 중급 인간 코치)</h3>
+                <h3>PCC 수준과의 비교</h3>
                 <ul>
-                    <li>AI는 코칭 프로세스의 '일부 측면'에서 유능했으나, 다른 측면은 미흡함.</li>
-                    <li><strong>[PCC 수준 충족]</strong>: C3(코칭 합의), C4(신뢰/안전)</li>
-                    <li><strong>[PCC 근접]</strong>: C6(경청)</li>
-                    <li><strong>[PCC 미달]</strong>: C5(존재감), C7(인식) 등</li>
+                    <li>AI는 코칭 프로세스의 '일부 측면'에서 유능했으나, 다른 측면은 미흡했음.</li>
+                    <li><strong>(강점)</strong> C3(코칭 합의), C4(신뢰/안전)는 <strong>PCC 수준(PCC level)</strong>을 충족함.</li>
+                    <li><strong>(보통)</strong> C6(경청)은 PCC 근접(PCC Markers) 수준을 보임.</li>
+                    <li><strong>(약점)</strong> C5(존재감), C7(인식) 등 인간적 깊이가 요구되는 영역은 PCC 수준에 미치지 못함.</li>
                 </ul>
-
                 <div class="quote-note">
-                    <p class="original">"...had this research adopted a similar approach and selected the best two from the transcripts, then the Al coaching agent in this study would have secured an ICF ACC credential." (p.12)</p>
-                    <p class="translation">인용: "만약 이 연구가 (인간과) 유사한 접근 방식을 채택하여 스크립트 중 최고 2개를 선택했다면, 이 AI 코칭 에이전트는 ICF ACC 자격을 획득했을 것임."</p>
+                    <strong>Paper's Quote:</strong> "...the AI coaching agent was able to behave in a way consistent with the ICF ACC BARS, and display examples of behaviour consistent with the ICF PCC Markers..." (p. 12)
+                    <br>
+                    <strong>(번역)</strong> "...AI 코칭 에이전트는 ICF ACC BARS와 일치하는 방식으로 행동할 수 있었고, ICF PCC Markers와 일치하는 행동 사례를 보여주었음..."
                 </div>
             </div>
-            <div class="slide-number">5 / 11</div>
         </section>
 
-        <!-- 슬라이드 6: 연구 결과 (C1-C4) -->
+        <!-- 슬라이드 6: 연구 결과 (C1-C4) (예시 수정됨) -->
         <section id="slide-6">
             <div class="slide-content">
                 <h2>5. 연구 결과 (2): AI 역량 상세 분석 (C1-C4)</h2>
-                <p class="lead">AI는 '관계 공동 생성' 클러스터(C3, C4)에서 강점을 보였으나, '기초' 클러스터(C1, C2)에서 한계를 보임.</p>
-                
-                <table>
+                <p class="lead-text">
+                    AI는 '관계 공동 생성' 클러스터(C3, C4)에서 강점을 보였으나, '기초' 클러스터(C1, C2)에서 한계를 보임.
+                </p>
+                <table class="table-c1-c4">
                     <thead>
                         <tr>
-                            <th>ICF 역량 (A, B)</th>
-                            <th>AI 평가 결과</th>
+                            <th>ICF 역량</th>
+                            <th>AI 평가</th>
                             <th>충족된 점 (강점)</th>
                             <th>부족한 점 (한계)</th>
                             <th>이해를 돕는 예시 (한계점 중심)</th>
@@ -619,23 +571,25 @@
                     </tbody>
                 </table>
                 <div class="quote-note">
-                    <p class="original">"The Al bot achieved a PCC level in this competency [C4], but it is important to note this with caution, given how these behaviours were experienced by clients." (p.10)</p>
-                    <p class="translation">인용: "AI 봇은 이 역량(C4)에서 PCC 수준을 달성했으나, 이러한 행동이 고객에게 어떻게 경험되었는지 고려할 때 주의가 필요함."</p>
+                    <strong>Paper's Quote:</strong> "While the transcripts provided good evidence of the AI coaching agent expressing 'empathy' and understanding, the assessors expressed the view that on occasions these 'statements sounded mechanistic' (A3)." (p. 9-10)
+                    <br>
+                    <strong>(번역)</strong> "스크립트가 AI의 '공감'과 이해를 보여주는 좋은 증거를 제공했지만, 평가관들은 때때로 이 '표현이 기계적으로 들린다'는 견해를 표명함."
                 </div>
             </div>
-            <div class="slide-number">6 / 11</div>
         </section>
 
-        <!-- 슬라이드 7: 연구 결과 (C5-C8) -->
+        <!-- 슬라이드 7: 연구 결과 (C5-C8) (예시, 평가 수정됨) -->
         <section id="slide-7">
             <div class="slide-content">
                 <h2>6. 연구 결과 (3): AI 역량 상세 분석 (C5-C8)</h2>
-                <p class="lead">AI는 '의사소통' 클러스터(C6)는 강했으나, C5(존재감)와 C7(인식)에서 명확한 한계가 나타남.</p>
-                <table>
+                <p class="lead-text">
+                    AI는 '의사소통' 클러스터(C6)는 강했으나, C5(존재감)와 C7(인식)에서 명확한 한계가 나타남.
+                </p>
+                <table class="table-c5-c8">
                     <thead>
                         <tr>
-                            <th>ICF 역량 (C, D)</th>
-                            <th>AI 평가 결과</th>
+                            <th>ICF 역량</th>
+                            <th>AI 평가</th>
                             <th>충족된 점 (강점)</th>
                             <th>부족한 점 (한계)</th>
                             <th>이해를 돕는 예시 (한계점 중심)</th>
@@ -673,93 +627,83 @@
                     </tbody>
                 </table>
                 <div class="quote-note">
-                    <p class="original">"However, it was unable to create its own metaphors, which might help enable the client to develop a fresh perspective on their own situation." (p.11)</p>
-                    <p class="translation">인용: "그러나 AI는 고객이 상황에 대한 새로운 관점을 갖도록 도울 수 있는 자신만의 은유를 생성하지 못함."</p>
+                    <strong>Paper's Quote:</strong> "Its biggest shortcoming was its inability to allow for silence, pauses and reflection... The AI bot was instead always keen to either summarise of move the conversation forward without pause..." (p. 10)
+                    <br>
+                    <strong>(번역)</strong> "AI의 가장 큰 단점은 침묵, 멈춤, 성찰을 허용하지 못하는 것이었음... AI 봇은 대신 항상 요약하거나 대화를 멈춤 없이 진행시키려 했음..."
                 </div>
             </div>
-            <div class="slide-number">7 / 11</div>
         </section>
 
         <!-- 슬라이드 8: 논의 및 시사점 -->
         <section id="slide-8">
             <div class="slide-content">
                 <h2>7. 논의 및 시사점</h2>
-                <p class="lead">AI가 ACC 수준에 도달함에 따라, 인간 코치는 AI가 할 수 없는 <strong>'차별적 부가 가치(Added Value)'</strong>에 집중해야 함.</p>
-                
-                <div class="two-columns">
-                    <div class="column">
-                        <h3>주요 관찰 사항 (Discussion)</h3>
+                <p class="lead-text">
+                    AI가 ACC 수준에 도달함에 따라, 인간 코치의 차별적 부가 가치(Added Value)가 중요해짐.
+                </p>
+                <h3>주요 관찰 사항 (Discussion)</h3>
+                <ul>
+                    <li><strong>성능 시험 (Road Testing):</strong> 고객이 세션 중 AI의 성능을 테스트함 (예: "그건 이중 질문이네요.").</li>
+                    <li><strong>50:50 발화 지분:</strong> AI의 잦은 요약과 텍스트 입력의 한계로 AI 발화 비중이 높게 나옴.</li>
+                </ul>
+                <h3>인간 코치의 차별적 부가 가치 (Human Added Value)</h3>
+                <ul>
+                    <li>AI가 ACC 수준을 달성한 이상, 인간 코치는 AI가 제공하기 어려운 고유 가치에 집중해야 함.</li>
+                    <li><strong>인간 고유 가치:</strong>
                         <ul>
-                            <li><strong>성능 시험 (Road Testing):</strong> 고객이 세션 중 AI의 성능을 테스트함. (예: "그건 이중 질문이네요.")</li>
-                            <li><strong>50:50 발화 지분:</strong> AI의 잦은 요약과 텍스트 입력의 한계로 AI 발화 비중이 높게 나타남 (인간 코칭은 20:80 권장).</li>
+                            <li>삶의 경험(Lived Experience) 기반 통찰</li>
+                            <li>유머(Humour)와 은유(Metaphor)의 창의적 사용</li>
+                            <li>깊은 인간적 연결(Human Connection)</li>
+                            <li>타인(인간)에 대한 책임감(Accountability)</li>
                         </ul>
-
-                        <h3>코칭 산업에 대한 시사점</h3>
-                        <ul>
-                            <li>현재 AI 코칭 시장은 규제 없는 <strong>'미개척 서비스(Frontier Service)'</strong> 영역임.</li>
-                            <li>ICF 등 전문 기관의 제품 인증 또는 품질보증마크(Kitemarking) 부여 고려가 필요함.</li>
-                        </ul>
-                    </div>
-                    <div class="column">
-                        <h3>인간 코치의 차별적 부가 가치 (Human Added Value)</h3>
-                        <p>AI가 ACC 수준을 달성한 이상, 인간 코치는 AI가 제공하기 어려운 고유 가치에 집중해야 함 (Passmore, 2024).</p>
-                        <ul>
-                            <li><strong>삶의 경험 (Lived Experience)</strong> 기반 통찰</li>
-                            <li><strong>유머 (Humour)</strong>와 <strong>은유 (Metaphor)</strong>의 창의적 사용 (C7)</li>
-                            <li><strong>깊은 인간적 연결 (Human Connection)</strong> (C2, C4)</li>
-                            <li>타인(인간)에 대한 <strong>책임감 (Accountability)</strong></li>
-                        </ul>
-                    </div>
-                </div>
-                
+                    </li>
+                </ul>
+                <h3>코칭 산업에 대한 시사점</h3>
+                <ul>
+                    <li>현재 AI 코칭 시장은 규제 없는 '미개척 서비스(Frontier Service)' 영역임.</li>
+                    <li>ICF 등 전문 기관의 제품 인증 또는 품질보증마크 부여 고려 필요.</li>
+                </ul>
                 <div class="quote-note">
-                    <p class="original">"As Al coaching agents develop... human coaches will need to demonstrate added value." (p.12)</p>
-                    <p class="translation">인용: "AI 코칭 에이전트가 발전함에 따라, 인간 코치는 (AI가 제공 못하는) 부가 가치를 입증해야 할 필요가 있음."</p>
+                    <strong>Paper's Quote:</strong> "...human coaches will need to demonstrate added value. This value may relate to the essence of being human: the ability to share personal insights based on the coaches' lived experience, to use humour and metaphor..." (p. 12)
+                    <br>
+                    <strong>(번역)</strong> "...인간 코치는 부가 가치를 입증해야 할 것임. 이 가치는 인간다움의 본질, 즉 코치의 삶의 경험에 기반한 통찰을 공유하고 유머와 은유를 사용하는 능력과 관련될 수 있음."
                 </div>
             </div>
-            <div class="slide-number">8 / 11</div>
         </section>
 
         <!-- 슬라이드 9: 결론 -->
         <section id="slide-9">
             <div class="slide-content">
                 <h2>8. 결론 및 향후 연구</h2>
-                <p class="lead">AI는 ACC 수준은 가능하나, 인간적 연결이 필요한 PCC/MCC 수준은 아직 어려운 것으로 판단됨.</p>
-                
-                <div class="two-columns">
-                    <div class="column">
-                        <h3>연구의 한계</h3>
-                        <ul>
-                            <li><strong>단일 AI 모델:</strong> evoach사의 Alpina 모델만 사용함.</li>
-                            <li><strong>제한된 샘플:</strong> 17개의 분석 세션 및 자원자 편향 가능성.</li>
-                            <li><strong>텍스트 기반 평가:</strong> 텍스트 코칭이므로 비언어적 요소 (C6 에너지 변화, C5 침묵) 등을 평가할 수 없음.</li>
-                        </ul>
-                    </div>
-                    <div class="column">
-                        <h3>향후 연구 제언</h3>
-                        <ul>
-                            <li>AI vs 인간 코치 효과성 비교 (RCT 연구)</li>
-                            <li>사용자 '경험'에 대한 심층 질적 연구 (만족도, 관계 형성 등)</li>
-                            <li><strong>음성, 아바타 기반 AI 코칭</strong> 평가 (텍스트의 한계를 넘어설 수 있는지)</li>
-                        </ul>
-                    </div>
-                </div>
-
+                <p class="lead-text">
+                    AI는 ACC 수준은 가능하나, 인간적 연결이 필요한 PCC/MCC 수준은 아직 어려운 것으로 판단됨.
+                </p>
+                <h3>연구의 한계</h3>
+                <ul>
+                    <li>단일 AI 모델 (Alpina) 사용.</li>
+                    <li>제한된 샘플 (17개) 및 자원자 편향 가능성.</li>
+                    <li>텍스트 기반 평가의 한계 (비언어적 요소, C6 에너지 변화 등 평가 불가).</li>
+                </ul>
+                <h3>향후 연구 제언</h3>
+                <ul>
+                    <li>AI vs 인간 코치 효과성 비교 (RCT 연구).</li>
+                    <li>사용자 '경험'에 대한 심층 질적 연구.</li>
+                    <li>음성, 아바타 기반 AI 코칭 평가.</li>
+                </ul>
                 <div class="quote-note">
-                    <p class="original">"...it is possible to build an Al coaching agent which clearly meets the requirements of an ICF coach at ACC standard, but achieving PCC or MCC standards is more challenging at present." (p.14)</p>
-                    <p class="translation">인용: "ICF 코치의 ACC 표준 요구사항을 명확히 충족하는 AI 에이전트를 구축하는 것은 가능하지만, 현재로서는 PCC 또는 MCC 표준을 달성하는 것이 더 어려움."</p>
+                    <strong>Paper's Quote:</strong> "The evidence from this study demonstrated it is possible to build an AI coaching agent which clearly meets the requirements of an ICF coach at ACC standard, but achieving PCC or MCC standards is more challenging at present." (p. 14)
+                    <br>
+                    <strong>(번역)</strong> "본 연구의 증거는 AI 코칭 에이전트가 ACC 표준의 ICF 코치 요구 사항을 명확히 충족할 수 있음을 보여주었으나, PCC 또는 MCC 표준 달성은 현재로서는 더 어려움."
                 </div>
             </div>
-            <div class="slide-number">9 / 11</div>
         </section>
 
-        <!-- 슬라이드 10: Q&A -->
+        <!-- 슬라이드 10: 질의응답 -->
         <section id="slide-10">
             <div class="slide-content">
-                <h1>9. 질의응답</h1>
-                <h3>경청해주셔서 감사합니다.</h3>
+                <h2 style="font-size: 3em; border-bottom: none; color: #333;">9. 질의응답</h2>
+                <p style="font-size: 1.5em; margin-top: 20px;">경청해주셔서 감사합니다.</p>
             </div>
-            <div class="slide-number">10 / 11</div>
         </section>
 
         <!-- 슬라이드 11: 참고문헌 -->
@@ -767,112 +711,86 @@
             <div class="slide-content">
                 <h2>10. 참고문헌 (Reference)</h2>
                 <ul>
-                    <li>Bachkirova, T., & Kemp, R. (2025). 'AI coaching': Democratising coaching service or offering an ersatz? Coaching: An International Journal of Theory, Research and Practice, 18(1), 27-45.</li>
-                    <li>Greif, S. (2018). Wofür sind Coaches da? Coaching zur Reflexion über ungewisse digitale Transformationsdynamiken. Presentation at the Coach Education for Result-Oriented Coaching. ABF.</li>
-                    <li>Passmore, J. (2024, June 20). Getting better all the time: Exploring AI & human performance, outcomes and ethics. Association of Business Psychologists Annual Conference, London.</li>
-                    <li>Passmore, J., & Tee, D. (2023a). Can chatbots replace human coaches? Issues and dilemmas for the coaching profession, coaching clients and for organisations. The Coaching Psychologist, 19(1), 47-54.</li>
-                    <li>Passmore, J., Tee, D. R., & Rutschmann, R. (2025). 'Getting better all the time': using professional human coach competencies to evaluate the quality of AI coaching agent performance. Coaching: An International Journal of Theory, Research and Practice.</li>
-                    <li>Rauen, C. (2018). Quo vadis, business coaching? Presentation at the DBVC Coaching Kongress in Berlin/Potsdam.</li>
-                    <li>(Other references from the original paper as needed)</li>
+                    <li>Bachkirova, T., & Kemp, R. (2025). 'AI coaching': Democratising coaching service or offering an ersatz? <i>Coaching: An International Journal of Theory, Research and Practice, 18</i>(1), 27-45.</li>
+                    <li>Greif, S. (2018). <i>Wofür sind Coaches da? Coaching zur Reflexion über ungewisse digitale Transformationsdynamiken</i> [What are coaches for? Coaching for reflection on uncertain digital transformation dynamics]. Presentation at the Coach Education for Result-Oriented Coaching. ABF.</li>
+                    <li>Passmore, J. (2024, June 20). <i>Getting better all the time: Exploring AI & human performance, outcomes and ethics</i>. Association of Business Psychologists Annual Conference, London.</li>
+                    <li>Passmore, J., & Tee, D. (2023a). Can chatbots replace human coaches? Issues and dilemmas for the coaching profession, coaching clients and for organisations. <i>The Coaching Psychologist, 19</i>(1), 47-54.</li>
+                    <li>Passmore, J., Tee, D. R., & Rutschmann, R. (2025). 'Getting better all the time': using professional human coach competencies to evaluate the quality of AI coaching agent performance. <i>Coaching: An International Journal of Theory, Research and Practice.</i></li>
+                    <li>Rauen, C. (2018). <i>Quo vadis, business coaching?</i> Presentation at the DBVC Coaching Kongress in Berlin/Potsdam.</li>
                 </ul>
             </div>
-            <div class="slide-number">11 / 11</div>
         </section>
 
-    </main>
+    </div>
+
+    <!-- 하단 네비게이션 버튼 -->
+    <div id="nav-buttons">
+        <button class="nav-btn" onclick="prevSlide()">&#8249;</button>
+        <button class="nav-btn" onclick="nextSlide()">&#8250;</button>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('slide-container');
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('#slide-nav a');
-            const prevBtn = document.getElementById('prev-slide');
-            const nextBtn = document.getElementById('next-slide');
-            
-            let currentSlide = 0;
-            const totalSlides = sections.length;
+        let currentSlide = 1;
+        const slides = document.querySelectorAll("#slide-container section");
+        const tocItems = document.querySelectorAll("#slide-nav li");
+        const totalSlides = slides.length;
 
-            // --- 1. Intersection Observer로 활성 슬라이드 감지 ---
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.id;
-                        // 활성 링크 업데이트 (TOC)
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                        
-                        // 현재 슬라이드 인덱스 업데이트
-                        currentSlide = Array.from(sections).findIndex(section => section.id === id);
-
-                        // 버튼 가시성 업데이트
-                        if (currentSlide === 0) {
-                            prevBtn.classList.add('hidden');
-                        } else {
-                            prevBtn.classList.remove('hidden');
-                        }
-
-                        if (currentSlide === totalSlides - 1) {
-                            nextBtn.classList.add('hidden');
-                        } else {
-                            nextBtn.classList.remove('hidden');
-                        }
-                    }
-                });
-            }, {
-                root: container, // 스크롤 컨테이너
-                threshold: 0.5 // 슬라이드가 50% 이상 보일 때
-            });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // --- 2. 내비게이션(TOC) 링크 클릭 시 스크롤 ---
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                    }
-                });
-            });
-
-            // --- 3. 키보드 방향키로 슬라이드 이동 ---
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    navigateToSlide(currentSlide + 1);
-                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    navigateToSlide(currentSlide - 1);
-                }
-            });
-
-            // --- 4. 화살표 버튼 클릭 이벤트 ---
-            prevBtn.addEventListener('click', () => {
-                navigateToSlide(currentSlide - 1);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                navigateToSlide(currentSlide + 1);
-            });
-
-            // --- 공통 슬라이드 이동 함수 ---
-            function navigateToSlide(slideIndex) {
-                if (slideIndex >= 0 && slideIndex < totalSlides) {
-                    sections[slideIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                }
+        // 슬라이드 보여주기 함수
+        function showSlide(n) {
+            // 유효 범위 확인
+            if (n > totalSlides) {
+                currentSlide = 1;
+            } else if (n < 1) {
+                currentSlide = totalSlides;
+            } else {
+                currentSlide = n;
             }
 
-            // --- 5. 마우스 휠 스크롤 기능 제거 ---
-            // (이전 코드의 wheel 이벤트 리스너를 추가하지 않음)
+            // 모든 슬라이드 숨기기
+            slides.forEach((slide) => {
+                slide.style.display = "none";
+            });
+
+            // 현재 슬라이드 보이기
+            slides[currentSlide - 1].style.display = "flex";
+
+            // TOC 업데이트
+            updateTOC();
+        }
+
+        // TOC(목차) 업데이트 함수
+        function updateTOC() {
+            tocItems.forEach((item, index) => {
+                if ((index + 1) === currentSlide) {
+                    item.classList.add("current");
+                } else {
+                    item.classList.remove("current");
+                }
+            });
+        }
+
+        // 다음 슬라이드
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        // 이전 슬라이드
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // 키보드 이벤트 리스너
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "ArrowRight") {
+                nextSlide();
+            } else if (e.key === "ArrowLeft") {
+                prevSlide();
+            }
         });
+
+        // 초기 로드 시 TOC 상태 업데이트
+        updateTOC();
     </script>
+
 </body>
 </html>
