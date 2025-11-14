@@ -6,12 +6,13 @@
     <title>AI 코칭 역량 평가 발표자료</title>
     <style>
         /*
-         * === CSS 재설계 (v13) ===
-         * - v12(안정적인 레이아웃) 기반
+         * === CSS 재설계 (v14) ===
          * - @media print 스타일 수정:
-         * 1. (BUG FIX) 모든 슬라이드가 가운데 정렬되는 문제 해결.
-         * 2. 'section'은 'justify-content: flex-start' (상단 정렬)을 기본으로 설정.
-         * 3. 'slide-1'(표지)와 'slide-10'(Q&A)만 'justify-content: center'로 예외 처리.
+         * 1. (BUG FIX) v13의 'justify-content' 상속 오류 수정.
+         * 2. 'section'에서 'justify-content' 기본값을 제거.
+         * 3. ID 선택자를 사용해 모든 슬라이드의 'justify-content'를 명시적으로 선언.
+         * - #slide-1, #slide-10 -> center
+         * - #slide-2, 3, 4, 5, 6, 7, 8, 9, 11 -> flex-start
          */
 
         /* 기본 스타일 (Screen Media) */
@@ -490,7 +491,7 @@
             }
         }
         
-        /* --- PDF 인쇄 전용 스타일 (v13 수정) --- */
+        /* --- PDF 인쇄 전용 스타일 (v14 수정) --- */
         @media print {
             html {
                 font-size: 10pt; /* 인쇄용 폰트 크기 고정 */
@@ -510,15 +511,10 @@
                 display: none;
             }
 
-            /* * (BUG FIX V13)
-             * - 모든 슬라이드를 '상단 정렬(flex-start)'을 기본값으로 수정
-             * - align-items: center로 A4용지에서 가로 중앙 정렬은 유지
-             * - text-align: left로 텍스트 왼쪽 정렬 유지
-             */
             section {
                 display: flex !important;
                 flex-direction: column;
-                justify-content: flex-start; /* FIX: 상단 정렬이 기본 */
+                /* justify-content: flex-start;  <-- v14: REMOVED FROM BASE */
                 align-items: center;         /* A4용지 내 수평 중앙 정렬 */
                 text-align: left;            /* 텍스트 왼쪽 정렬 */
                 width: 100%;
@@ -557,26 +553,41 @@
                 padding-top: calc(2cm + 1rem); /* Bar 공간 확보 */
             }
             
-            /* --- 예외 처리 --- */
-            /* 표지는 수직/수평 중앙 정렬 */
-            #slide-1 {
+            /* --- (v14) 정렬 규칙: 명시적으로 모든 슬라이드 지정 --- */
+            
+            /* (v14) 중앙 정렬 슬라이드 */
+            #slide-1,
+            #slide-10 {
                 justify-content: center;
+            }
+            
+            /* (v14) 상단 정렬 슬라이드 */
+            #slide-2,
+            #slide-3,
+            #slide-4,
+            #slide-5,
+            #slide-6,
+            #slide-7,
+            #slide-8,
+            #slide-9,
+            #slide-11 {
+                justify-content: flex-start;
+            }
+
+            /* (v14) 개별 정렬 오버라이드 */
+            #slide-1 {
                 align-items: center;
                 flex-direction: row;
             }
-            /* Q&A는 수직/수평/텍스트 중앙 정렬 */
             #slide-10 {
-                justify-content: center;
                 align-items: center;
                 text-align: center;
             }
-            /* 참고문헌은 상단 정렬, 텍스트는 좌측 정렬 (기본값) */
             #slide-11 {
-                 justify-content: flex-start;
                  align-items: center;
                  text-align: left;
             }
-            /* --- 예외 처리 끝 --- */
+            /* --- (v14) 정렬 규칙 끝 --- */
 
 
             /* 표지 정보 박스 디자인 유지 */
