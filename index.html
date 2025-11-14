@@ -6,14 +6,16 @@
     <title>AI 코칭 역량 평가 발표자료</title>
     <style>
         /* 기본 스타일 */
+        html {
+            font-size: 16px; /* rem 단위의 기준 설정 */
+        }
         body {
             font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
             background-color: #f0f0f0;
             color: #333;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* 스크롤바 제거 */
-            /* 단어 단위 줄바꿈 적용 */
+            overflow: hidden; /* 페이지 전체 스크롤바 제거 */
             word-break: keep-all;
             white-space: normal;
         }
@@ -25,20 +27,20 @@
             position: relative;
         }
 
-        /* 개별 슬라이드 */
+        /* 개별 슬라이드 (화면 전체를 채우는 배경/패딩 역할) */
         section {
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             display: none; /* 기본적으로 숨김 */
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
+            background-color: transparent; /* 배경은 투명 */
             position: absolute;
             top: 0;
             left: 0;
             box-sizing: border-box;
-            padding: 40px 80px;
+            padding: 3rem; /* 슬라이드와 뷰포트 가장자리 사이의 여백 */
         }
 
         /* 첫 번째 슬라이드는 보이도록 설정 */
@@ -46,66 +48,83 @@
             display: flex;
         }
 
-        /* 슬라이드 공통 콘텐츠 래퍼 */
+        /* 슬라이드 공통 콘텐츠 래퍼 (실제 흰색 슬라이드) */
         .slide-content {
             width: 100%;
-            max-width: 1100px; /* 표준 PPT 느낌의 최대 너비 */
             height: 100%;
+            max-width: 1300px; /* 슬라이드 최대 너비 */
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 2.5rem 3rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* 상단 정렬 */
             align-items: flex-start;
+            box-sizing: border-box;
+            overflow-y: auto; /* 핵심: 내용이 넘칠 경우 슬라이드 내부 스크롤 */
         }
 
-        /* 표지 슬라이드 (1번) */
+        /* 표지 슬라이드 (1번) 특별 스타일 */
         #slide-1 .slide-content {
-            background: linear-gradient(135deg, #ffffff 60%, #f26800 60%);
-            padding: 60px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            max-width: 1200px;
-            height: auto;
-            align-items: flex-start;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4rem;
         }
 
-        #slide-1 .title-section {
+        #slide-1 .title-main {
             flex-basis: 60%;
-            padding-right: 40px;
-        }
-
-        #slide-1 h1 {
-            font-size: 2.2em; /* 2.4em -> 2.2em */
-            color: #000;
-            margin: 0;
-            line-height: 1.3;
-            /* APA 7th 스타일에 맞게 이탤릭체는 <i> 태그로 제어 */
+            padding-right: 2rem;
         }
         
-        #slide-1 .journal-info {
-            font-size: 0.9em;
+        #slide-1 .title-authors {
+            font-size: 1.2rem;
             color: #555;
-            margin-top: 15px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        #slide-1 .title-text {
+            font-size: 2.5rem;
+            color: #000;
+            margin: 1rem 0;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        #slide-1 .title-journal {
+            font-size: 1.1rem;
+            color: #333;
+            margin: 0;
+        }
+        
+        #slide-1 .title-journal-info {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 0.5rem;
             font-weight: bold;
         }
 
-        #slide-1 .presenter-info {
-            flex-basis: 40%;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
+        #slide-1 .presenter-info-box {
+            flex-basis: 35%;
+            background-color: #f9f9f9;
+            border-left: 5px solid #f26800;
+            padding: 2rem;
             border-radius: 8px;
-            align-self: flex-start;
         }
 
-        #slide-1 .presenter-info h2 {
-            font-size: 1.4em;
+        #slide-1 .presenter-info-box h2 {
+            font-size: 1.4rem;
             color: #f26800;
             border-bottom: 2px solid #f26800;
             padding-bottom: 10px;
             margin-top: 0;
+            margin-bottom: 1.5rem;
         }
 
-        #slide-1 .presenter-info p {
-            font-size: 1.1em;
+        #slide-1 .presenter-info-box p {
+            font-size: 1.1rem;
             margin: 10px 0;
             line-height: 1.6;
         }
@@ -114,15 +133,16 @@
         #slide-10 .slide-content,
         #slide-11 .slide-content {
             align-items: center;
+            justify-content: center; /* Q&A는 중앙 정렬 */
             text-align: center;
         }
 
         /* 공통 헤더 (제목) */
         h2 {
-            font-size: 2.2em; /* 2.4em -> 2.2em */
+            font-size: 2.2rem;
             color: #f26800;
             margin-top: 0;
-            margin-bottom: 15px; /* 20px -> 15px */
+            margin-bottom: 1rem;
             padding-bottom: 10px;
             border-bottom: 3px solid #f26800;
             width: 100%;
@@ -130,17 +150,17 @@
 
         /* 공통 리드문 */
         .lead-text {
-            font-size: 1.4em; /* 1.5em -> 1.4em */
+            font-size: 1.4rem;
             font-weight: bold;
             color: #555;
-            margin-bottom: 25px; /* 30px -> 25px */
+            margin-bottom: 1.5rem;
             line-height: 1.5;
         }
 
         /* 공통 본문 텍스트 */
         p, li {
-            font-size: 1.2em; /* 1.3em -> 1.2em */
-            line-height: 1.7; /* 1.8 -> 1.7 */
+            font-size: 1.1rem;
+            line-height: 1.7;
             margin: 8px 0;
             word-break: keep-all; /* 단어 단위 줄바꿈 */
         }
@@ -159,10 +179,10 @@
             width: 100%;
             background-color: #f9f9f9;
             border-left: 5px solid #f26800;
-            padding: 15px 20px;
-            margin-top: 20px;
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
             font-style: italic;
-            font-size: 1em;
+            font-size: 1rem;
             color: #444;
             line-height: 1.6;
             box-sizing: border-box;
@@ -177,30 +197,32 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 1.5rem;
+            gap: 1rem; /* 단계 사이 간격 */
         }
         #slide-4 .step {
-            flex-basis: 18%;
+            flex: 1; /* 모든 단계가 동일한 너비 */
+            min-width: 150px; /* 최소 너비 */
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-top: 4px solid #f26800;
-            padding: 15px;
+            padding: 1rem;
             border-radius: 5px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         #slide-4 .step h3 {
-            font-size: 1.1em;
+            font-size: 1.1rem;
             color: #f26800;
             margin: 0 0 10px 0;
         }
         #slide-4 .step p {
-            font-size: 0.95em;
+            font-size: 0.9rem;
             line-height: 1.5;
             margin: 0;
         }
         #slide-4 .arrow {
-            font-size: 2.5em;
+            font-size: 2rem;
             color: #f26800;
             display: flex;
             align-items: center;
@@ -212,13 +234,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.95em; /* 테이블 폰트 크기 조정 */
-            table-layout: fixed; /* 테이블 레이아웃 고정 */
+            margin-top: 1rem;
+            font-size: 0.9rem; /* 테이블 폰트 크기 조정 */
+            table-layout: auto; /* 핵심: 자동 레이아웃으로 변경 */
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px 12px; /* 12px -> 10px 12px */
+            padding: 10px 12px;
             text-align: left;
             vertical-align: top;
             line-height: 1.6;
@@ -228,7 +250,7 @@
             background-color: #f26800;
             color: white;
             text-align: center;
-            font-size: 1.05em;
+            font-size: 1rem;
             font-weight: bold;
         }
         td {
@@ -239,20 +261,13 @@
         }
         td.strength { background-color: #e6f7ff; }
         td.weakness { background-color: #fff2e8; }
-        td.example { background-color: #f9f9f9; font-size: 0.95em; }
+        td.example { 
+            background-color: #f9f9f9; 
+            font-size: 0.9rem;
+            min-width: 300px; /* 예시 열 최소 너비 보장 */
+        }
 
-        /* 테이블 너비 조정 */
-        .table-c1-c4 th:nth-child(1), .table-c1-c4 td:nth-child(1) { width: 14%; } /* 역량 */
-        .table-c1-c4 th:nth-child(2), .table-c1-c4 td:nth-child(2) { width: 11%; } /* 평가 */
-        .table-c1-c4 th:nth-child(3), .table-c1-c4 td:nth-child(3) { width: 18%; } /* 강점 */
-        .table-c1-c4 th:nth-child(4), .table-c1-c4 td:nth-child(4) { width: 22%; } /* 한계 */
-        .table-c1-c4 th:nth-child(5), .table-c1-c4 td:nth-child(5) { width: 35%; } /* 예시 */
-        
-        .table-c5-c8 th:nth-child(1), .table-c5-c8 td:nth-child(1) { width: 14%; } /* 역량 */
-        .table-c5-c8 th:nth-child(2), .table-c5-c8 td:nth-child(2) { width: 11%; } /* 평가 */
-        .table-c5-c8 th:nth-child(3), .table-c5-c8 td:nth-child(3) { width: 18%; } /* 강점 */
-        .table-c5-c8 th:nth-child(4), .table-c5-c8 td:nth-child(4) { width: 22%; } /* 한계 */
-        .table-c5-c8 th:nth-child(5), .table-c5-c8 td:nth-child(5) { width: 35%; } /* 예시 */
+        /* 테이블 너비 조정 제거 - table-layout: auto가 처리 */
 
 
         /* 우측 상단 목차 (TOC) */
@@ -274,7 +289,7 @@
             padding: 0;
         }
         #slide-nav li {
-            font-size: 0.85em;
+            font-size: 0.85rem;
             margin: 5px 0;
             padding: 3px 0;
             cursor: pointer;
@@ -306,9 +321,9 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 45px; /* 50px -> 45px */
-            height: 45px; /* 50px -> 45px */
-            font-size: 1.5em; /* 1.8em -> 1.5em */
+            width: 45px;
+            height: 45px;
+            font-size: 1.5rem;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -324,10 +339,14 @@
         }
 
         /* 참고문헌 스타일 */
+        #slide-11 .slide-content {
+            justify-content: flex-start; /* 참고문헌은 상단 정렬 */
+            text-align: left;
+        }
         #slide-11 ul {
             padding-left: 0;
             list-style: none;
-            font-size: 0.75em;
+            font-size: 0.75rem;
             line-height: 1.6;
             text-align: left;
             columns: 2;
@@ -362,20 +381,20 @@
     <!-- 슬라이드 컨테이너 -->
     <div id="slide-container">
 
-        <!-- 슬라이드 1: 표지 -->
+        <!-- 슬라이드 1: 표지 (디자인 수정됨) -->
         <section id="slide-1">
             <div class="slide-content">
-                <div class="title-section">
-                    <h1>
-                         Passmore, J., Tee, D. R., & Rutschmann, R. (2025). 'Getting better all the time': using professional human coach competencies to evaluate the quality of AI coaching agent performance. <i>Coaching: An International Journal of Theory, Research and Practice.</i>
-                        <br>
-                       
-                    </h1>
-                    <div class="journal-info">
+                <div class="title-main">
+                    <p class="title-authors">Passmore, J., Tee, D. R., & Rutschmann, R. (2025).</p>
+                    <h1 class="title-text">'Getting better all the time': using professional human coach competencies to evaluate the quality of AI coaching agent performance.</h1>
+                    <p class="title-journal">
+                        <i>Coaching: An International Journal of Theory, Research and Practice.</i>
+                    </p>
+                    <p class="title-journal-info">
                         (Journal IF: 2.0 | Scopus Q2, SSCI (ESCI) & Scopus Indexed)
-                    </div>
+                    </p>
                 </div>
-                <div class="presenter-info">
+                <div class="presenter-info-box">
                     <h2>비즈니스코칭세미나</h2>
                     <p><strong>담당교수:</strong> 김유천 교수님</p>
                     <p><strong>발표일:</strong> 2025년 11월 15일</p>
