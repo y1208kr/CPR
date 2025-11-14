@@ -5,33 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 코칭 역량 평가 발표자료</title>
     <style>
+        /*
+         * === CSS 재설계 (v7) ===
+         * 1. 16:9 비율(aspect-ratio) 반응형 레이아웃으로 변경
+         * 2. 폰트 크기를 vw 기반 반응형(clamp)으로 변경하여 가독성 확보
+         * 3. body flex-center로 슬라이드를 항상 화면 정중앙에 배치
+         * 4. .slide-content에 overflow-y: auto;를 두어 콘텐츠 잘림(먹힘) 방지
+         * 5. h3 태그 및 주요 목록에 '레이어' 디자인 추가
+         */
+
         /* 기본 스타일 */
         html {
-            /* 폰트 크기 기준을 15px -> 14.5px로 더 줄임 */
-            font-size: 14.5px; 
+            /* * 폰트 크기를 뷰포트 너비에 반응하도록 설정
+             * 최소 10px, 기본 1.1vw, 최대 18px로 설정하여 가독성 확보
+             */
+            font-size: clamp(10px, 1.1vw, 18px);
         }
+        
         body {
             font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
             background: radial-gradient(circle, #f7f7f7, #e9e9e9);
             color: #333;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* 페이지 전체 스크롤바 제거 */
+            /* 100vh를 min-height로 변경, display:flex로 중앙 정렬 */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* body의 스크롤은 숨김 */
             word-break: keep-all;
             white-space: normal;
         }
 
-        /* 슬라이드 컨테이너 */
+        /* 슬라이드 컨테이너 (단순 래퍼) */
         #slide-container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* 개별 슬라이드 (화면 전체를 채우는 배경/패딩 역할) */
         section {
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             display: none; /* 기본적으로 숨김 */
             flex-direction: column;
             justify-content: center;
@@ -41,8 +63,7 @@
             top: 0;
             left: 0;
             box-sizing: border-box;
-            /* 외부 여백 2.5rem -> 2rem로 축소 */
-            padding: 2rem; 
+            padding: 2vh; /* 화면 대비 여백 */
         }
 
         /* 첫 번째 슬라이드는 보이도록 설정 */
@@ -52,20 +73,36 @@
 
         /* 슬라이드 공통 콘텐츠 래퍼 (실제 흰색 슬라이드) */
         .slide-content {
-            width: 100%;
-            height: 100%;
-            max-width: 1300px;
+            /* 16:9 비율 강제 */
+            aspect-ratio: 16 / 9;
+            
+            /*
+             * 너비와 높이 설정:
+             * 1. 가로가 긴 화면: 높이 90vh 기준으로 16:9 너비 계산
+             * 2. 세로가 긴 화면: 너비 90vw 기준으로 16:9 높이 계산
+             * 3. 'max-' 속성으로 최대 크기 제한
+             */
+            height: 90vh;
+            width: calc(90vh * (16 / 9));
+            max-width: 90vw;
+            max-height: calc(90vw * (9 / 16));
+
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            /* 내부 여백 2.5rem 3rem -> 2rem 2.5rem로 축소 */
-            padding: 2rem 2.5rem;
+            
+            /* 내부 여백을 반응형으로 설정 (컨테이너 너비 기준) */
+            padding: 2.5% 3.5%; 
+            
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            /* 기본적으로 중앙 정렬 (상단 쏠림 방지) */
+            justify-content: center; 
             align-items: flex-start;
             box-sizing: border-box;
-            overflow: hidden; /* 스크롤 없음 */
+            
+            /* === 중요: 콘텐츠 잘림(먹힘) 방지 === */
+            overflow-y: auto;
             position: relative;
         }
 
@@ -75,8 +112,9 @@
             position: absolute;
             top: 0;
             left: 0;
+            right: 0; /* right: 0 추가 */
             width: 100%;
-            height: 10px; /* 12px -> 10px */
+            height: 1.2rem; /* 10px -> 1.2rem (폰트와 비례) */
             background-color: #f26800;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
@@ -84,8 +122,10 @@
 
         /* Bar가 추가되었으므로 Bar 아래부터 콘텐츠 시작 */
         section:not(#slide-1) .slide-content {
-            /* 4rem -> 3rem (padding 2rem + Bar 1rem) */
-            padding-top: 3.2rem; 
+            /* 4rem -> 3.5rem (padding 2rem + Bar 1.5rem) */
+            padding-top: 4.5rem; 
+            /* 콘텐츠가 많은 슬라이드는 상단 정렬 */
+            justify-content: flex-start;
         }
 
 
@@ -94,7 +134,7 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            padding: 3rem; /* 4rem -> 3rem */
+            padding: 4%; /* 패딩을 %로 변경 */
         }
 
         #slide-1 .title-main {
@@ -103,28 +143,28 @@
         }
         
         #slide-1 .title-authors {
-            font-size: 1.15rem; /* 1.2rem -> 1.15rem */
+            font-size: 1.25rem;
             color: #555;
             font-weight: 500;
             margin: 0;
         }
 
         #slide-1 .title-text {
-            font-size: 2.3rem; /* 2.5rem -> 2.3rem */
+            font-size: 2.6rem; /* 폰트 크기 증가 */
             color: #000;
-            margin: 0.8rem 0; /* 1rem -> 0.8rem */
+            margin: 1rem 0;
             line-height: 1.3;
             font-weight: 700;
         }
 
         #slide-1 .title-journal {
-            font-size: 1.05rem; /* 1.1rem -> 1.05rem */
+            font-size: 1.15rem;
             color: #333;
             margin: 0;
         }
         
         #slide-1 .title-journal-info {
-            font-size: 0.9rem;
+            font-size: 1rem; /* 폰트 크기 증가 */
             color: #555;
             margin-top: 0.5rem;
             font-weight: bold;
@@ -134,21 +174,21 @@
             flex-basis: 35%;
             background-color: #f9f9f9;
             border-left: 5px solid #f26800;
-            padding: 1.8rem; /* 2rem -> 1.8rem */
+            padding: 1.8rem;
             border-radius: 8px;
         }
 
         #slide-1 .presenter-info-box h2 {
-            font-size: 1.3rem; /* 1.4rem -> 1.3rem */
+            font-size: 1.4rem;
             color: #f26800;
             border-bottom: 2px solid #f26800;
-            padding-bottom: 8px; /* 10px -> 8px */
+            padding-bottom: 8px;
             margin-top: 0;
-            margin-bottom: 1.2rem; /* 1.5rem -> 1.2rem */
+            margin-bottom: 1.2rem;
         }
 
         #slide-1 .presenter-info-box p {
-            font-size: 1.05rem; /* 1.1rem -> 1.05rem */
+            font-size: 1.1rem;
             margin: 8px 0;
             line-height: 1.6;
         }
@@ -157,7 +197,8 @@
         #slide-10 .slide-content,
         #slide-11 .slide-content {
             align-items: center;
-            justify-content: center; /* Q&A는 중앙 정렬 */
+            /* Q&A는 중앙 정렬 */
+            justify-content: center; 
             text-align: center;
         }
         /* Q&A, 참고문헌은 Bar가 있어도 패딩 원복 */
@@ -168,39 +209,67 @@
 
         /* 공통 헤더 (제목) */
         h2 {
-            font-size: 2rem; /* 2.1rem -> 2rem */
+            font-size: 2.2rem; /* 폰트 크기 증가 */
             color: #f26800;
             margin-top: 0;
-            margin-bottom: 0.8rem; /* 1rem -> 0.8rem */
-            padding-bottom: 8px; /* 10px -> 8px */
+            margin-bottom: 1.2rem; /* 여백 증가 */
+            padding-bottom: 0.8rem; /* 여백 증가 */
             border-bottom: 3px solid #f26800;
             width: 100%;
         }
 
         /* 공통 리드문 */
         .lead-text {
-            font-size: 1.25rem; /* 1.3rem -> 1.25rem */
+            font-size: 1.4rem; /* 폰트 크기 증가 */
             font-weight: bold;
             color: #555;
-            margin-bottom: 0.8rem; /* 1rem -> 0.8rem */
-            line-height: 1.45; /* 1.5 -> 1.45 */
+            margin-bottom: 1.2rem; /* 여백 증가 */
+            line-height: 1.5;
+        }
+
+        /* === 신규: h3 (서브헤더) 레이어 디자인 === */
+        h3 {
+            font-size: 1.3rem;
+            color: #f26800;
+            background-color: #fcfcfc;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 4px solid #f26800;
+            border-bottom: 1px solid #f0f0f0;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+        
+        /* h3 뒤에 오는 ul의 상단 여백 제거 */
+        h3 + ul {
+            margin-top: 0.5rem;
         }
 
         /* 공통 본문 텍스트 */
         p, li {
-            font-size: 1rem; /* 1.05rem -> 1rem */
-            line-height: 1.55; /* 1.6 -> 1.55 */
-            margin: 5px 0; /* 6px -> 5px */
+            font-size: 1.1rem; /* 폰트 크기 증가 */
+            line-height: 1.65;
+            margin: 6px 0;
             word-break: keep-all;
         }
 
         ul {
             padding-left: 25px;
-            margin-top: 8px; /* 10px -> 8px */
+            margin-top: 10px;
         }
 
         ul li {
-            margin-bottom: 6px; /* 8px -> 6px */
+            margin-bottom: 8px;
+        }
+
+        /* === 신규: 주요 가치 목록 (레이어 디자인) === */
+        .value-list {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-left: 4px solid #f26800;
+            padding: 1rem 1rem 1rem 2rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
         }
 
         /* 인용구 스타일 */
@@ -208,12 +277,12 @@
             width: 100%;
             background-color: #f9f9f9;
             border-left: 5px solid #f26800;
-            padding: 0.7rem 1rem; /* 0.8rem 1rem -> 0.7rem 1rem */
-            margin-top: 0.8rem; /* 1rem -> 0.8rem */
+            padding: 0.8rem 1.2rem;
+            margin-top: 1rem;
             font-style: italic;
-            font-size: 0.9rem; /* 0.95rem -> 0.9rem */
+            font-size: 1rem; /* 폰트 크기 증가 */
             color: #444;
-            line-height: 1.5; /* 1.6 -> 1.5 */
+            line-height: 1.6;
             box-sizing: border-box;
             word-break: keep-all;
         }
@@ -226,8 +295,8 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-top: 0.8rem; /* 1rem -> 0.8rem */
-            gap: 0.7rem; /* 0.8rem -> 0.7rem */
+            margin-top: 1rem;
+            gap: 0.8rem;
         }
         #slide-4 .step {
             flex: 1;
@@ -235,23 +304,26 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-top: 4px solid #f26800;
-            padding: 0.7rem; /* 0.8rem -> 0.7rem */
+            padding: 0.8rem;
             border-radius: 5px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         #slide-4 .step h3 {
-            font-size: 1rem; /* 1.05rem -> 1rem */
+            font-size: 1.1rem;
             color: #f26800;
             margin: 0 0 6px 0;
+            background: none; /* 스텝 h3는 레이어 스타일 제외 */
+            border: none;
+            padding: 0;
         }
         #slide-4 .step p {
-            font-size: 0.8rem; /* 0.85rem -> 0.8rem */
-            line-height: 1.45; /* 1.5 -> 1.45 */
+            font-size: 0.9rem;
+            line-height: 1.5;
             margin: 0;
         }
         #slide-4 .arrow {
-            font-size: 1.8rem; /* 2rem -> 1.8rem */
+            font-size: 2rem;
             color: #f26800;
             display: flex;
             align-items: center;
@@ -263,23 +335,23 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 0.7rem; /* 0.8rem -> 0.7rem */
-            font-size: 0.8rem; /* 0.85rem -> 0.8rem */
+            margin-top: 0.8rem;
+            font-size: 0.9rem; /* 폰트 크기 증가 */
             table-layout: auto;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 7px 9px; /* 8px 10px -> 7px 9px */
+            padding: 10px 12px; /* 패딩 증가 */
             text-align: left;
             vertical-align: top;
-            line-height: 1.5; /* 1.6 -> 1.5 */
+            line-height: 1.6;
             word-break: keep-all;
         }
         th {
             background-color: #f26800;
             color: white;
             text-align: center;
-            font-size: 0.9rem; /* 0.95rem -> 0.9rem */
+            font-size: 1rem;
             font-weight: bold;
         }
         td {
@@ -327,7 +399,7 @@
             backdrop-filter: blur(5px);
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 8px 12px; /* 10px 15px -> 8px 12px */
+            padding: 10px 15px; /* 패딩 복원 */
             z-index: 1000;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
@@ -337,9 +409,9 @@
             padding: 0;
         }
         #slide-nav li {
-            font-size: 0.75rem; /* 0.8rem -> 0.75rem */
-            margin: 3px 0; /* 4px -> 3px */
-            padding: 2px 0;
+            font-size: 0.85rem; /* 폰트 크기 증가 */
+            margin: 4px 0;
+            padding: 3px 0;
             cursor: pointer;
             color: #555;
             font-weight: 500;
@@ -369,9 +441,9 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 40px; /* 45px -> 40px */
-            height: 40px; /* 45px -> 40px */
-            font-size: 1.3rem; /* 1.5rem -> 1.3rem */
+            width: 45px; /* 크기 복원 */
+            height: 45px;
+            font-size: 1.5rem; /* 크기 복원 */
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -390,20 +462,30 @@
         #slide-11 .slide-content {
             justify-content: flex-start;
             text-align: left;
-            padding-top: 3.2rem; /* Bar 공간 확보 */
+            padding-top: 4.5rem; /* Bar 공간 확보 */
         }
         #slide-11 ul {
             padding-left: 0;
             list-style: none;
-            font-size: 0.65rem; /* 0.7rem -> 0.65rem */
-            line-height: 1.45; /* 1.5 -> 1.45 */
+            font-size: 0.8rem; /* 폰트 크기 증가 */
+            line-height: 1.5;
             text-align: left;
             columns: 2;
-            column-gap: 25px; /* 30px -> 25px */
+            column-gap: 30px;
         }
         #slide-11 li {
-            margin-bottom: 5px; /* 6px -> 5px */
+            margin-bottom: 6px;
             word-break: break-all;
+        }
+
+        /* 테이블이 있는 슬라이드는 상단 정렬 */
+        #slide-6 .slide-content,
+        #slide-7 .slide-content {
+            justify-content: flex-start;
+        }
+        /* 참고문헌 슬라이드도 상단 정렬 */
+        #slide-11 .slide-content {
+            justify-content: flex-start;
         }
 
     </style>
@@ -718,7 +800,7 @@
                 <ul>
                     <li>AI가 ACC 수준을 달성한 이상, 인간 코치는 AI가 제공하기 어려운 고유 가치에 집중해야 함.</li>
                     <li><strong>인간 고유 가치:</strong>
-                        <ul>
+                        <ul class="value-list">
                             <li>삶의 경험(Lived Experience) 기반 통찰</li>
                             <li>유머(Humour)와 은유(Metaphor)의 창의적 사용</li>
                             <li>깊은 인간적 연결(Human Connection)</li>
