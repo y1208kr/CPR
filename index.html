@@ -7,11 +7,12 @@
     <style>
         /* 기본 스타일 */
         html {
-            font-size: 15px; /* rem 단위의 기준 설정 (16px -> 15px) */
+            /* 폰트 크기 기준을 15px -> 14.5px로 더 줄임 */
+            font-size: 14.5px; 
         }
         body {
             font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-            background: radial-gradient(circle, #f7f7f7, #e9e9e9); /* 배경 그라데이션 */
+            background: radial-gradient(circle, #f7f7f7, #e9e9e9);
             color: #333;
             margin: 0;
             padding: 0;
@@ -35,12 +36,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: transparent; /* 배경은 투명 */
+            background-color: transparent;
             position: absolute;
             top: 0;
             left: 0;
             box-sizing: border-box;
-            padding: 2.5rem; /* 슬라이드와 뷰포트 가장자리 사이의 여백 */
+            /* 외부 여백 2.5rem -> 2rem로 축소 */
+            padding: 2rem; 
         }
 
         /* 첫 번째 슬라이드는 보이도록 설정 */
@@ -52,18 +54,19 @@
         .slide-content {
             width: 100%;
             height: 100%;
-            max-width: 1300px; /* 슬라이드 최대 너비 */
+            max-width: 1300px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 2.5rem 3rem;
+            /* 내부 여백 2.5rem 3rem -> 2rem 2.5rem로 축소 */
+            padding: 2rem 2.5rem;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* 상단 정렬 */
+            justify-content: flex-start;
             align-items: flex-start;
             box-sizing: border-box;
             overflow: hidden; /* 스크롤 없음 */
-            position: relative; /* Bar를 위한 position */
+            position: relative;
         }
 
         /* Bar 디자인 (표지 제외) */
@@ -73,7 +76,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 12px; /* Bar 두께 */
+            height: 10px; /* 12px -> 10px */
             background-color: #f26800;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
@@ -81,7 +84,8 @@
 
         /* Bar가 추가되었으므로 Bar 아래부터 콘텐츠 시작 */
         section:not(#slide-1) .slide-content {
-            padding-top: 4rem; /* 2.5rem + Bar 공간 */
+            /* 4rem -> 3rem (padding 2rem + Bar 1rem) */
+            padding-top: 3.2rem; 
         }
 
 
@@ -90,7 +94,7 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            padding: 4rem;
+            padding: 3rem; /* 4rem -> 3rem */
         }
 
         #slide-1 .title-main {
@@ -99,22 +103,22 @@
         }
         
         #slide-1 .title-authors {
-            font-size: 1.2rem;
+            font-size: 1.15rem; /* 1.2rem -> 1.15rem */
             color: #555;
             font-weight: 500;
             margin: 0;
         }
 
         #slide-1 .title-text {
-            font-size: 2.5rem;
+            font-size: 2.3rem; /* 2.5rem -> 2.3rem */
             color: #000;
-            margin: 1rem 0;
+            margin: 0.8rem 0; /* 1rem -> 0.8rem */
             line-height: 1.3;
             font-weight: 700;
         }
 
         #slide-1 .title-journal {
-            font-size: 1.1rem;
+            font-size: 1.05rem; /* 1.1rem -> 1.05rem */
             color: #333;
             margin: 0;
         }
@@ -130,22 +134,22 @@
             flex-basis: 35%;
             background-color: #f9f9f9;
             border-left: 5px solid #f26800;
-            padding: 2rem;
+            padding: 1.8rem; /* 2rem -> 1.8rem */
             border-radius: 8px;
         }
 
         #slide-1 .presenter-info-box h2 {
-            font-size: 1.4rem;
+            font-size: 1.3rem; /* 1.4rem -> 1.3rem */
             color: #f26800;
             border-bottom: 2px solid #f26800;
-            padding-bottom: 10px;
+            padding-bottom: 8px; /* 10px -> 8px */
             margin-top: 0;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem; /* 1.5rem -> 1.2rem */
         }
 
         #slide-1 .presenter-info-box p {
-            font-size: 1.1rem;
-            margin: 10px 0;
+            font-size: 1.05rem; /* 1.1rem -> 1.05rem */
+            margin: 8px 0;
             line-height: 1.6;
         }
 
@@ -164,39 +168,39 @@
 
         /* 공통 헤더 (제목) */
         h2 {
-            font-size: 2.1rem; /* 2.2rem -> 2.1rem */
+            font-size: 2rem; /* 2.1rem -> 2rem */
             color: #f26800;
             margin-top: 0;
-            margin-bottom: 1rem;
-            padding-bottom: 10px;
+            margin-bottom: 0.8rem; /* 1rem -> 0.8rem */
+            padding-bottom: 8px; /* 10px -> 8px */
             border-bottom: 3px solid #f26800;
             width: 100%;
         }
 
         /* 공통 리드문 */
         .lead-text {
-            font-size: 1.3rem; /* 1.4rem -> 1.3rem */
+            font-size: 1.25rem; /* 1.3rem -> 1.25rem */
             font-weight: bold;
             color: #555;
-            margin-bottom: 1rem; /* 1.5rem -> 1rem */
-            line-height: 1.5;
+            margin-bottom: 0.8rem; /* 1rem -> 0.8rem */
+            line-height: 1.45; /* 1.5 -> 1.45 */
         }
 
         /* 공통 본문 텍스트 */
         p, li {
-            font-size: 1.05rem; /* 1.1rem -> 1.05rem */
-            line-height: 1.6; /* 1.7 -> 1.6 */
-            margin: 6px 0; /* 8px -> 6px */
-            word-break: keep-all; /* 단어 단위 줄바꿈 */
+            font-size: 1rem; /* 1.05rem -> 1rem */
+            line-height: 1.55; /* 1.6 -> 1.55 */
+            margin: 5px 0; /* 6px -> 5px */
+            word-break: keep-all;
         }
 
         ul {
             padding-left: 25px;
-            margin-top: 10px; /* 15px -> 10px */
+            margin-top: 8px; /* 10px -> 8px */
         }
 
         ul li {
-            margin-bottom: 8px; /* 10px -> 8px */
+            margin-bottom: 6px; /* 8px -> 6px */
         }
 
         /* 인용구 스타일 */
@@ -204,12 +208,12 @@
             width: 100%;
             background-color: #f9f9f9;
             border-left: 5px solid #f26800;
-            padding: 0.8rem 1rem; /* 1rem 1.25rem -> 0.8rem 1rem */
-            margin-top: 1rem; /* 1.5rem -> 1rem */
+            padding: 0.7rem 1rem; /* 0.8rem 1rem -> 0.7rem 1rem */
+            margin-top: 0.8rem; /* 1rem -> 0.8rem */
             font-style: italic;
-            font-size: 0.95rem; /* 1rem -> 0.95rem */
+            font-size: 0.9rem; /* 0.95rem -> 0.9rem */
             color: #444;
-            line-height: 1.6;
+            line-height: 1.5; /* 1.6 -> 1.5 */
             box-sizing: border-box;
             word-break: keep-all;
         }
@@ -222,32 +226,32 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-top: 1rem;
-            gap: 0.8rem; /* 1rem -> 0.8rem */
+            margin-top: 0.8rem; /* 1rem -> 0.8rem */
+            gap: 0.7rem; /* 0.8rem -> 0.7rem */
         }
         #slide-4 .step {
-            flex: 1; /* 모든 단계가 동일한 너비 */
-            min-width: 150px; /* 최소 너비 */
+            flex: 1;
+            min-width: 150px;
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-top: 4px solid #f26800;
-            padding: 0.8rem; /* 1rem -> 0.8rem */
+            padding: 0.7rem; /* 0.8rem -> 0.7rem */
             border-radius: 5px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         #slide-4 .step h3 {
-            font-size: 1.05rem; /* 1.1rem -> 1.05rem */
+            font-size: 1rem; /* 1.05rem -> 1rem */
             color: #f26800;
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
         }
         #slide-4 .step p {
-            font-size: 0.85rem; /* 0.9rem -> 0.85rem */
-            line-height: 1.5;
+            font-size: 0.8rem; /* 0.85rem -> 0.8rem */
+            line-height: 1.45; /* 1.5 -> 1.45 */
             margin: 0;
         }
         #slide-4 .arrow {
-            font-size: 2rem;
+            font-size: 1.8rem; /* 2rem -> 1.8rem */
             color: #f26800;
             display: flex;
             align-items: center;
@@ -259,23 +263,23 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 0.8rem;
-            font-size: 0.85rem; /* 0.9rem -> 0.85rem */
+            margin-top: 0.7rem; /* 0.8rem -> 0.7rem */
+            font-size: 0.8rem; /* 0.85rem -> 0.8rem */
             table-layout: auto;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px 10px; /* 10px 12px -> 8px 10px */
+            padding: 7px 9px; /* 8px 10px -> 7px 9px */
             text-align: left;
             vertical-align: top;
-            line-height: 1.6;
+            line-height: 1.5; /* 1.6 -> 1.5 */
             word-break: keep-all;
         }
         th {
             background-color: #f26800;
             color: white;
             text-align: center;
-            font-size: 0.95rem; /* 1rem -> 0.95rem */
+            font-size: 0.9rem; /* 0.95rem -> 0.9rem */
             font-weight: bold;
         }
         td {
@@ -323,7 +327,7 @@
             backdrop-filter: blur(5px);
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 10px 15px;
+            padding: 8px 12px; /* 10px 15px -> 8px 12px */
             z-index: 1000;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
@@ -333,9 +337,9 @@
             padding: 0;
         }
         #slide-nav li {
-            font-size: 0.8rem; /* 0.85rem -> 0.8rem */
-            margin: 4px 0; /* 5px -> 4px */
-            padding: 3px 0;
+            font-size: 0.75rem; /* 0.8rem -> 0.75rem */
+            margin: 3px 0; /* 4px -> 3px */
+            padding: 2px 0;
             cursor: pointer;
             color: #555;
             font-weight: 500;
@@ -365,9 +369,9 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 1.5rem;
+            width: 40px; /* 45px -> 40px */
+            height: 40px; /* 45px -> 40px */
+            font-size: 1.3rem; /* 1.5rem -> 1.3rem */
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -384,22 +388,22 @@
 
         /* 참고문헌 스타일 */
         #slide-11 .slide-content {
-            justify-content: flex-start; /* 참고문헌은 상단 정렬 */
+            justify-content: flex-start;
             text-align: left;
-            padding-top: 4rem; /* Bar 공간 확보 */
+            padding-top: 3.2rem; /* Bar 공간 확보 */
         }
         #slide-11 ul {
             padding-left: 0;
             list-style: none;
-            font-size: 0.7rem; /* 0.75rem -> 0.7rem */
-            line-height: 1.5; /* 1.6 -> 1.5 */
+            font-size: 0.65rem; /* 0.7rem -> 0.65rem */
+            line-height: 1.45; /* 1.5 -> 1.45 */
             text-align: left;
             columns: 2;
-            column-gap: 30px; /* 40px -> 30px */
+            column-gap: 25px; /* 30px -> 25px */
         }
         #slide-11 li {
-            margin-bottom: 6px; /* 8px -> 6px */
-            word-break: break-all; /* 참고문헌은 영어이므로 break-all */
+            margin-bottom: 5px; /* 6px -> 5px */
+            word-break: break-all;
         }
 
     </style>
